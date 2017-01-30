@@ -2,11 +2,9 @@ Mistral 101
 ===========
 
 This is my crash-course in Mistral for people familiar with
-TripleO and Ansible. It borrows from other intros
-([e.g. d0ugal's blog](http://www.dougalmatthews.com/)), while
-focusing on writing a simple workflow that might help someone 
-who's goal is to write larger workflow for TripleO to do something 
-extra. 
+TripleO and Ansible. It borrows very heavily from the upstream 
+documenation and [d0ugal](http://www.dougalmatthews.com/) and 
+another [crash-course](https://etherpad.openstack.org/p/tripleo-mistral-crash-course-december-2016).
 
 Installation
 ------------
@@ -27,7 +25,12 @@ Overview
 - Mistral is OpenStack's [Workflow](https://en.wikipedia.org/wiki/Workflow) service
 - Describe a series of _tasks_ in yaml and Mistral will coordinate them (usually) _asynchronously_ (a specific task begins only after indication that the preceding task has been completed)
 - Mistral tracks state and can manage long running processes
-- [Docs](http://docs.openstack.org/developer/mistral/overview.html) 
+- Mistral natively speaks all OpenStack APIs available in the OpenStack python client
+- TripleO manages OpenStack with OpenStack so Mistral fits that goal well
+- TripleO's Workflow is to deploy OpenStack and it uses Mistral
+- TripleO's API can be thought of as Mistral; e.g. the TripleO-UI uses it that way
+- An experimental project exists to call [Ansible from Mistral](https://github.com/d0ugal/mistral-ansible-actions)
+- [Mistral Docs](http://docs.openstack.org/developer/mistral/overview.html) 
 
 Hello World
 -----------
@@ -50,29 +53,51 @@ Terms
 -----
 
 - [Workflow](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#workflows) 
-  A set of tasks. E.g. everything under `hello_world`
+  : A set of tasks, e.g. everything under `hello_world`
 
 - [Task](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#tasks) 
-  A set of actions. E.g. `say_hello` was the only task. 
+  : A set of actions, e.g. `say_hello` was the only task. 
 
 - [Action](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#actions)
-  A set of built-in functions to do useful things; e.g. std.echo, std.http, std.ssh, std.fail
-  [All calls made by OpenStack's python-client are available as Mistral actions!](https://github.com/openstack/mistral/blob/master/mistral/actions/openstack/mapping.json)
-  E.g. `std.echo output="Hello Workflow!"` Actions can be run on the
-  command line alone, e.g. `mistral run-action std.echo '{"output":
-  "Hello Workflow!"}'`.
+  : A set of built-in functions within a task to do useful things,
+  `std.echo output="Hello Workflow!"`. Other actions besides std.echo are std.http, std.ssh, std.fail, etc. 
 
-- [Workbook](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#workbooks) -
-  A yaml file which which may contain a set of workflows (a set of
-  tasks (a set of actions)). E.g. the [hello_world.yaml](https://github.com/fultonj/mistral/blob/master/101/hello_world.yaml) file. 
+- [Workbook](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#workbooks) 
+  : A yaml file which which may contain a set of workflows (a set of
+  tasks (a set of actions)), e.g. the [hello_world.yaml](https://github.com/fultonj/mistral/blob/master/101/hello_world.yaml) file. 
 
-- [Execution](http://docs.openstack.org/developer/mistral/terminology/executions.html) -
-  An _instance_ of the objects above. After defining a workflow, you
+- [Execution](http://docs.openstack.org/developer/mistral/terminology/executions.html) 
+  : An _instance_ of the objects above. After defining a workflow, you
   can tell Mistral to _execute_ it. Each execution is stored and can
   be seen with `mistral execution-list`. An execution is how Mistral
-  tracks the _state_ of an action, task, or workflow. E.g. `mistral 
+  tracks the _state_ of an action, task, or workflow, e.g. `mistral 
   mistral execution-create hello_world`. 
 
+More on Actions
+---------------
+
+- Workflows, Tasks, Workbooks, and Executions let you organize your _Actions_. 
+- Actions are where the power comes from
+- The [System](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#system-actions) actions include std.echo, std.fail, std.email, std.ssh, [std.http](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#std-http), [std.javascript](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#std-javascript)
+- [Ad-hoc actions](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#ad-hoc-actions) are just wrappers around System actions
+- Actions can be run direclty on the command line, e.g. `mistral run-action std.echo '{"output": "Hello Workflow!"}'`.
+
+
+### OpenStack Actions
+
+- All calls made by OpenStack's python-client are [available](https://github.com/openstack/mistral/blob/master/mistral/actions/openstack/mapping.json) as Mistral actions. 
+- Compare `mistral action-list | grep cinder` to `mistral action-list | grep nova`
+- Run the command `mistral run-action neutron.list_networks`
+- Look at the output of `mistral action-get nova.servers_create`
+- [See](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#yaml-example) how to launch a Nova instance with Mistral 
+- See also [TripleO Workbooks](https://github.com/openstack/tripleo-common/tree/master/workbooks)
+
+
+### TripleO Actions
+- You can [write your own](http://docs.openstack.org/developer/mistral/developer/creating_custom_action.html) custom Mistral actions in Python
+- TripleO comes with its own [Actions](https://github.com/openstack/tripleo-common/tree/master/tripleo_common/actions) (see how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg))
+- See [Action Development](https://github.com/openstack/tripleo-common#action-development) if you want to add to the TripleO Actions
+- See `mistral action-list | grep tripleo`
 
 Exercise
 --------
