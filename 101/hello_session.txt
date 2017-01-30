@@ -1,0 +1,70 @@
+Register the workflow:
+
+[stack@undercloud 101]$ mistral workflow-create hello_world.yaml
++-------------------+-------------+-------------------+--------+-------+-------------------+------------+
+| ID                | Name        | Project ID        | Tags   | Input | Created at        | Updated at |
++-------------------+-------------+-------------------+--------+-------+-------------------+------------+
+| 87aff8dc-f7d4-457 | hello_world | cca2560a41ef4d9aa | <none> |       | 2017-01-30        | None       |
+| 2-b035-1b933a3cac |             | b4d168146d10518   |        |       | 20:18:26          |            |
+| ad                |             |                   |        |       |                   |            |
++-------------------+-------------+-------------------+--------+-------+-------------------+------------+
+[stack@undercloud 101]$
+
+The workflow is stored. Trigger it by name.
+
+[stack@undercloud 101]$ mistral execution-create hello_world
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | f17443a9-2d17-4d2b-8a4d-768fd725f818 |
+| Workflow ID       | 87aff8dc-f7d4-4572-b035-1b933a3cacad |
+| Workflow name     | hello_world                          |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-01-30 20:18:37                  |
+| Updated at        | 2017-01-30 20:18:37                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$
+
+Monitor the workflow as it executes.
+
+ mistral execution-list
+
+Note the UUID and view its details:
+
+[stack@undercloud 101]$ UUID=f17443a9-2d17-4d2b-8a4d-768fd725f818
+[stack@undercloud 101]$ mistral execution-get $UUID;
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | f17443a9-2d17-4d2b-8a4d-768fd725f818 |
+| Workflow ID       | 87aff8dc-f7d4-4572-b035-1b933a3cacad |
+| Workflow name     | hello_world                          |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | SUCCESS                              |
+| State info        | None                                 |
+| Created at        | 2017-01-30 20:18:37                  |
+| Updated at        | 2017-01-30 20:18:37                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$
+
+Get the execution's output:
+
+[stack@undercloud 101]$ mistral execution-get-output $UUID;
+{
+    "output": "Hello Workflow!", 
+    "__task_execution": {
+        "id": "00dbdfa8-269f-4890-b296-88262368967d", 
+        "name": "say_hello"
+    }
+}
+[stack@undercloud 101]$ 
+
+If you make an update to the yaml file, then you run:
+
+ mistral workflow-update hello_world.yaml
+
+to upload the new version. 
