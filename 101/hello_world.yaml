@@ -1,0 +1,9 @@
+---
+version: '2.0'
+
+hello_world:
+  tasks:
+    say_hello:
+      action: std.echo output="Hello Workflow!"
+      publish:
+        output: <% task(say_hello).result %>
