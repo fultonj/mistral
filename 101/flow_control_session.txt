@@ -1,0 +1,76 @@
+
+[stack@undercloud 101]$ mistral workflow-create flow_control.yaml 
++-----------------+--------------+-----------------+--------+---------+-----------------+------------+
+| ID              | Name         | Project ID      | Tags   | Input   | Created at      | Updated at |
++-----------------+--------------+-----------------+--------+---------+-----------------+------------+
+| dae451ca-5009   | flow_control | cca2560a41ef4d9 | <none> | x=False | 2017-01-31      | None       |
+| -4a5e-89ba-     |              | aab4d168146d105 |        |         | 22:37:33        |            |
+| a5ba83db46c3    |              | 18              |        |         |                 |            |
++-----------------+--------------+-----------------+--------+---------+-----------------+------------+
+[stack@undercloud 101]$
+
+
+[stack@undercloud 101]$ mistral execution-create flow_control 
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | ab871018-ed87-4cec-ac78-13a455bef695 |
+| Workflow ID       | dae451ca-5009-4a5e-89ba-a5ba83db46c3 |
+| Workflow name     | flow_control                         |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-01-31 22:39:40                  |
+| Updated at        | 2017-01-31 22:39:40                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ UUID=ab871018-ed87-4cec-ac78-13a455bef695
+[stack@undercloud 101]$ mistral execution-get $UUID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | ab871018-ed87-4cec-ac78-13a455bef695 |
+| Workflow ID       | dae451ca-5009-4a5e-89ba-a5ba83db46c3 |
+| Workflow name     | flow_control                         |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | SUCCESS                              |
+| State info        | None                                 |
+| Created at        | 2017-01-31 22:39:40                  |
+| Updated at        | 2017-01-31 22:39:41                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-get-output $UUID
+{
+    "__task_execution": {
+        "id": "7e3ae758-4841-4c0a-8b0f-893b806791ce", 
+        "name": "task_b"
+    }
+}
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-create flow_control '{"x": true}'
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 93530a7d-c195-479a-9080-a8234240181c |
+| Workflow ID       | dae451ca-5009-4a5e-89ba-a5ba83db46c3 |
+| Workflow name     | flow_control                         |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-01-31 22:43:22                  |
+| Updated at        | 2017-01-31 22:43:22                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ mistral execution-get-output 93530a7d-c195-479a-9080-a8234240181c
+{
+    "__task_execution": {
+        "id": "191fae26-9281-4a4c-888e-71bf74a84500", 
+        "name": "task_a"
+    }
+}
+[stack@undercloud 101]$ 

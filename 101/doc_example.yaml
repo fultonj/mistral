@@ -1,0 +1,17 @@
+---
+version: "2.0"
+
+my_workflow:
+  type: direct
+
+  input:
+    - names
+
+  tasks:
+    task1:
+      with-items: name in <% $.names %>
+      action: std.echo output=<% $.name %>
+      on-success: task2
+
+    task2:
+      action: std.echo output="Done"

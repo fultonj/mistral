@@ -1,0 +1,16 @@
+---
+version: '2.0'
+
+flow_control:
+  input:
+    - x: false
+
+  tasks:
+    task_switch:
+      on-success:
+        - task_a: <% $.x = true %>
+        - task_b: <% $.x != true %>
+    task_a:
+      action: std.echo output="x is true"
+    task_b:
+      action: std.echo output="x is not true"

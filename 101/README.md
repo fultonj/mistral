@@ -2,9 +2,10 @@ Mistral 101
 ===========
 
 This is my crash-course in Mistral for people familiar with
-TripleO and Ansible. It borrows very heavily from the upstream 
-documenation and [d0ugal](http://www.dougalmatthews.com/) and 
-another [crash-course](https://etherpad.openstack.org/p/tripleo-mistral-crash-course-december-2016).
+TripleO and Ansible. It's basically an aggregation of parts of the
+[upstream documenation](http://docs.openstack.org/developer/mistral/), 
+[d0ugal's blog](http://www.dougalmatthews.com/), and another 
+[crash-course](https://etherpad.openstack.org/p/tripleo-mistral-crash-course-december-2016).
 
 Installation
 ------------
@@ -82,24 +83,22 @@ More on Actions
 - [Ad-hoc actions](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#ad-hoc-actions) are just wrappers around System actions
 - Actions can be run direclty on the command line, e.g. `mistral run-action std.echo '{"output": "Hello Workflow!"}'`.
 
-
 ### OpenStack Actions
-
 - All calls made by OpenStack's python-client are [available](https://github.com/openstack/mistral/blob/master/mistral/actions/openstack/mapping.json) as Mistral actions. 
 - Compare `mistral action-list | grep cinder` to `mistral action-list | grep nova`
 - Run the command `mistral run-action neutron.list_networks`
 - Look at the output of `mistral action-get nova.servers_create`
 - [See](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#yaml-example) how to launch a Nova instance with Mistral 
-- See also [TripleO Workbooks](https://github.com/openstack/tripleo-common/tree/master/workbooks)
-
 
 ### TripleO Actions
 - You can [write your own](http://docs.openstack.org/developer/mistral/developer/creating_custom_action.html) custom Mistral actions in Python
 - TripleO comes with its own [Actions](https://github.com/openstack/tripleo-common/tree/master/tripleo_common/actions) (see how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg))
 - See [Action Development](https://github.com/openstack/tripleo-common#action-development) if you want to add to the TripleO Actions
+- See also [TripleO Workbooks](https://github.com/openstack/tripleo-common/tree/master/workbooks)
 - See `mistral action-list | grep tripleo`
 
-Exercise
---------
+Exercises
+---------
 
-- Complete the http://docs.openstack.org/developer/mistral/quickstart.html
+- [Example from the docs](http://docs.openstack.org/developer/mistral/quickstart.html) [doc_example.yaml](https://github.com/fultonj/mistral/blob/master/101/doc_example.yaml) [doc_example_session.txt](https://github.com/fultonj/mistral/blob/master/101/doc_example_session.txt)
+- [d0ugal's flow control example](http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control) [flow_control.yaml](https://github.com/fultonj/mistral/blob/master/101/flow_control.yaml) [flow_control_session.txt](https://github.com/fultonj/mistral/blob/master/101/flow_control_session.txt)

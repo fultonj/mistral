@@ -1,0 +1,89 @@
+
+
+[stack@undercloud 101]$ mistral workflow-create doc_example.yaml 
++-------------------+-------------+-------------------+--------+-------+-------------------+------------+
+| ID                | Name        | Project ID        | Tags   | Input | Created at        | Updated at |
++-------------------+-------------+-------------------+--------+-------+-------------------+------------+
+| deb98a29-d242-4f3 | my_workflow | cca2560a41ef4d9aa | <none> | names | 2017-01-31        | None       |
+| 2-ac35-d61bcd8a62 |             | b4d168146d10518   |        |       | 22:20:35          |            |
+| de                |             |                   |        |       |                   |            |
++-------------------+-------------+-------------------+--------+-------+-------------------+------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-create my_workflow '{"names": ["The Doctor","Romana","K9"]}'
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 623acc2a-b899-44ce-9a21-959454b30945 |
+| Workflow ID       | deb98a29-d242-4f32-ac35-d61bcd8a62de |
+| Workflow name     | my_workflow                          |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-01-31 22:23:25                  |
+| Updated at        | 2017-01-31 22:23:25                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ UUID=623acc2a-b899-44ce-9a21-959454b30945
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-get $UUID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 623acc2a-b899-44ce-9a21-959454b30945 |
+| Workflow ID       | deb98a29-d242-4f32-ac35-d61bcd8a62de |
+| Workflow name     | my_workflow                          |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | SUCCESS                              |
+| State info        | None                                 |
+| Created at        | 2017-01-31 22:23:25                  |
+| Updated at        | 2017-01-31 22:23:26                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral task-list $UUID
++---------------------------+-------+---------------+----------------------------+---------+------------+
+| ID                        | Name  | Workflow name | Execution ID               | State   | State info |
++---------------------------+-------+---------------+----------------------------+---------+------------+
+| 052abfd5-82c7-4876-9b2a-  | task1 | my_workflow   | 623acc2a-b899-44ce-        | SUCCESS | None       |
+| f6ddf0b70b1d              |       |               | 9a21-959454b30945          |         |            |
+| 28cbf067-129b-            | task2 | my_workflow   | 623acc2a-b899-44ce-        | SUCCESS | None       |
+| 4b50-9a86-01e40d5d198b    |       |               | 9a21-959454b30945          |         |            |
++---------------------------+-------+---------------+----------------------------+---------+------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral task-get-result 28cbf067-129b-4b50-9a86-01e40d5d198b
+"Done"
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral task-get-result 052abfd5-82c7-4876-9b2a-f6ddf0b70b1d
+[
+    "The Doctor", 
+    "Romana", 
+    "K9"
+]
+[stack@undercloud 101]$
+
+[stack@undercloud 101]$ mistral action-execution-list 052abfd5-82c7-4876-9b2a-f6ddf0b70b1d
++-------------------+----------+---------------+-----------+-------------------+---------+----------+
+| ID                | Name     | Workflow name | Task name | Task ID           | State   | Accepted |
++-------------------+----------+---------------+-----------+-------------------+---------+----------+
+| 6ccc2fdb-4552-41a | std.echo | my_workflow   | task1     | 052abfd5-82c7-487 | SUCCESS | True     |
+| 5-a16f-           |          |               |           | 6-9b2a-           |         |          |
+| 2a5aefb6c416      |          |               |           | f6ddf0b70b1d      |         |          |
+| 97d319db-cbfd-    | std.echo | my_workflow   | task1     | 052abfd5-82c7-487 | SUCCESS | True     |
+| 423e-810b-        |          |               |           | 6-9b2a-           |         |          |
+| 1838b47828b0      |          |               |           | f6ddf0b70b1d      |         |          |
+| fcbb20f0-141d-47c | std.echo | my_workflow   | task1     | 052abfd5-82c7-487 | SUCCESS | True     |
+| 7-b527-05db4218c0 |          |               |           | 6-9b2a-           |         |          |
+| e3                |          |               |           | f6ddf0b70b1d      |         |          |
++-------------------+----------+---------------+-----------+-------------------+---------+----------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral action-execution-get-output 97d319db-cbfd-423e-810b-1838b47828b0
+{
+    "result": "K9"
+}
+[stack@undercloud 101]$ 
