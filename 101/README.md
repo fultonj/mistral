@@ -100,5 +100,5 @@ More on Actions
 Exercises
 ---------
 
-- [Example from the docs](http://docs.openstack.org/developer/mistral/quickstart.html) [doc_example.yaml](https://github.com/fultonj/mistral/blob/master/101/doc_example.yaml) [doc_example_session.txt](https://github.com/fultonj/mistral/blob/master/101/doc_example_session.txt)
-- [d0ugal's flow control example](http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control) [flow_control.yaml](https://github.com/fultonj/mistral/blob/master/101/flow_control.yaml) [flow_control_session.txt](https://github.com/fultonj/mistral/blob/master/101/flow_control_session.txt)
+- [Example from the docs](http://docs.openstack.org/developer/mistral/quickstart.html) | [doc_example.yaml](https://github.com/fultonj/mistral/blob/master/101/doc_example.yaml) | [doc_example_session.txt](https://github.com/fultonj/mistral/blob/master/101/doc_example_session.txt)
+- [d0ugal's flow control example](http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control) | [flow_control.yaml](https://github.com/fultonj/mistral/blob/master/101/flow_control.yaml) | [flow_control_session.txt](https://github.com/fultonj/mistral/blob/master/101/flow_control_session.txt)
