@@ -2,7 +2,7 @@ Mistral 101
 ===========
 
 This is my crash-course in Mistral for people familiar with
-TripleO and Ansible. It's basically an aggregation of parts of the
+TripleO. It's basically an aggregation of parts of the
 [upstream documenation](http://docs.openstack.org/developer/mistral/), 
 [d0ugal's blog](http://www.dougalmatthews.com/), and another 
 [crash-course](https://etherpad.openstack.org/p/tripleo-mistral-crash-course-december-2016).
@@ -112,12 +112,19 @@ Zaqar
 - TripleO's workflows post messages to the 'tripleo' Zaqar queue; e.g. see [scale.yaml](https://github.com/openstack/tripleo-common/blob/156d2c/workbooks/scale.yaml#L31)
 - If a failed workflow appears in `mistral execution-list`, check that Zaqar is running (`sudo systemctl | grep zaqar`) and the logs `/var/log/mistral/{engine.log,executor.log}`
 
-
 Interactive Zaqar
 -----------------
 - Workflows can be paused to wait for user input before being sent down the Zaqar queue as per [d0ugal's interactive workflow example](http://www.dougalmatthews.com/2017/Jan/31/interactive-mistral-workflows-over-zaqar)
 - [interactive-workflow.yaml](https://github.com/fultonj/mistral/blob/master/101/interactive-workflow.yaml) 
 - [interactive-workflow_session.txt](https://github.com/fultonj/mistral/blob/master/101/interactive-workflow_session.txt)
+
+TripleO Deployment Plan
+-----------------------
+- The TripleO _Deployment Plan_ is a Swift container and a Mistral _Environment_
+- The deployment plan is created on `openstack overcloud deploy ...`
+- You may then run `mistral environment-get overcloud`, e.g. see [deployment_plan_session.txt](https://github.com/fultonj/mistral/blob/master/101/deployment_plan_session.txt)
+- The payload is the Variables field which is a JSON document with passwords, parameter_defaults, and environments (meaning Heat environment files in this context)
+- If you `swift download overcloud` you may see the generated Heat env files: overcloud-resource-registry-puppet.yaml, user-environment.yaml, overcloud.yaml
 
 Extending TripleO's Actions
 ---------------------------
