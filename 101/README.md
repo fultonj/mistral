@@ -108,7 +108,7 @@ Zaqar
 - The [Zaqar](https://wiki.openstack.org/wiki/Zaqar#Zaqar) queuing service is not a replacement for RabbitMQ; it's a queue for cloud users not cloud operators similar to Amzon's SQS. 
 - Zaqar was [changed](https://specs.openstack.org/openstack/zaqar-specs/specs/newton/mistral-notifications.html) to allow a message to a Zaqar queue to trigger a Mistral workflow.
 - Each TripleO workflow creates a Zaqar queue to send progress
-  information back to the client (CLI or web UI) [diagram](https://github.com/fultonj/mistral/blob/master/101/shardys_mistral_tripleo_slide.png)
+  information back to the client (CLI or web UI). See [diagram](https://raw.githubusercontent.com/fultonj/mistral/master/101/shardys_mistral_tripleo_slide.png)
 - TripleO's workflows post messages to the 'tripleo' Zaqar queue; e.g. see [scale.yaml](https://github.com/openstack/tripleo-common/blob/156d2c/workbooks/scale.yaml#L31)
 - If a failed workflow appears in `mistral execution-list`, check that Zaqar is running (`sudo systemctl | grep zaqar`) and the logs `/var/log/mistral/{engine.log,executor.log}`
 - Workflows can be paused to wait for user input before being sent down the Zaqar queue as per [d0ugal's interactive workflow example](http://www.dougalmatthews.com/2017/Jan/31/interactive-mistral-workflows-over-zaqar)
@@ -116,7 +116,8 @@ Zaqar
 Extending TripleO's Actions
 ---------------------------
 - You can [write your own](http://docs.openstack.org/developer/mistral/developer/creating_custom_action.html) custom Mistral actions in Python
-- See how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg#62)
+- [Example](https://review.openstack.org/#/c/413229) of adding a workflow to TripleO to configure part of Swift
+- See how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg#L62)
 - Restart Mistral to run your action as described in [Action Development](https://github.com/openstack/tripleo-common#action-development) after writing your actions as described below.
 ```
 git clone https://git.openstack.org/openstack/tripleo-common.git
@@ -125,5 +126,5 @@ git checkout -b my_action
 vim my_action.py
 vim ../../setup.cfg
 ```
-- [Example](https://review.openstack.org/#/c/413229) of adding a workflow to TripleO to configure part of Swift
+
 
