@@ -9,7 +9,6 @@ TripleO and Ansible. It's basically an aggregation of parts of the
 
 Installation
 ------------
-
 - Install an undercloud (e.g. use [tripleo-quickstart](http://docs.openstack.org/developer/tripleo-quickstart) or [OSPd](https://access.redhat.com/documentation/en/red-hat-openstack-platform/10/paged/director-installation-and-usage))
 - SSH into the undercloud as the stack user and `source ~/stackrc`
 - If `mistral --version` doesn't look something like it does below, fix the undercloud
@@ -22,7 +21,6 @@ mistral 2.1.2
 
 Overview
 --------
-
 - Mistral is OpenStack's [Workflow](https://en.wikipedia.org/wiki/Workflow) service
 - Describe a series of _tasks_ in yaml and Mistral will coordinate them (usually) _asynchronously_ (a specific task begins only after indication that the preceding task has been completed)
 - Mistral tracks state and can manage long running processes
@@ -35,7 +33,6 @@ Overview
 
 Hello World
 -----------
-
 Borrowing from [d0ugal's example](http://www.dougalmatthews.com/2016/Nov/18/mistral-workflow-engine),
 download [hello_world.yaml](https://github.com/fultonj/mistral/blob/master/101/hello_world.yaml).
 
@@ -52,21 +49,16 @@ Compare your output to [hello_session.txt](https://github.com/fultonj/mistral/bl
 
 Terms
 -----
-
 - [Workflow](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#workflows) 
   : A set of tasks, e.g. everything under `hello_world`
-
 - [Task](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#tasks) 
   : A set of actions, e.g. `say_hello` was the only task. 
-
 - [Action](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#actions)
   : A set of built-in functions within a task to do useful things,
   `std.echo output="Hello Workflow!"`. Other actions besides std.echo are std.http, std.ssh, std.fail, etc. 
-
 - [Workbook](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#workbooks) 
   : A yaml file which which may contain a set of workflows (a set of
   tasks (a set of actions)), e.g. the [hello_world.yaml](https://github.com/fultonj/mistral/blob/master/101/hello_world.yaml) file. 
-
 - [Execution](http://docs.openstack.org/developer/mistral/terminology/executions.html) 
   : An _instance_ of the objects above. After defining a workflow, you
   can tell Mistral to _execute_ it. Each execution is stored and can
@@ -76,7 +68,6 @@ Terms
 
 Actions
 -------
-
 - Workflows, Tasks, Workbooks, and Executions let you organize your _Actions_. 
 - Actions are where the power comes from
 - The [System](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#system-actions) actions include std.echo, std.fail, std.email, std.ssh, [std.http](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#std-http), [std.javascript](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#std-javascript)
@@ -85,7 +76,6 @@ Actions
 
 OpenStack Actions
 -----------------
-
 - All calls made by OpenStack's python-client are [available](https://github.com/openstack/mistral/blob/master/mistral/actions/openstack/mapping.json) as Mistral actions. 
 - Compare `mistral action-list | grep cinder` to `mistral action-list | grep nova`
 - Run the command `mistral run-action neutron.list_networks`
@@ -94,32 +84,40 @@ OpenStack Actions
 
 Workflow Input and Viewing Actions
 ----------------------------------
-
-- [Example from the docs on viewing actions and passing input to workflows](http://docs.openstack.org/developer/mistral/quickstart.html) 
+- [Example from the docs](http://docs.openstack.org/developer/mistral/quickstart.html#write-a-workflow) on viewing actions and passing input to workflows.
 - [input_action_details.yaml](https://github.com/fultonj/mistral/blob/master/101/input_action_details.yaml) 
 - [input_action_details_session.txt](https://github.com/fultonj/mistral/blob/master/101/input_action_details_session.txt)
 
+
 Flow Control and Using Workbooks
 --------------------------------
-
 - [d0ugal's flow control example](http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control)
 - [flow_control.yaml](https://github.com/fultonj/mistral/blob/master/101/flow_control.yaml) 
 - [flow_control_session.txt](https://github.com/fultonj/mistral/blob/master/101/flow_control_session.txt)
 
 
-TripleO Actions
----------------
-
+TripleO Actions and Workbooks
+-----------------------------
 - See `mistral action-list | grep tripleo`
 - TripleO comes with its [Mistral Actions](https://github.com/openstack/tripleo-common/tree/master/tripleo_common/actions) 
 - TripleO comes with its [Mistral Workbooks](https://github.com/openstack/tripleo-common/tree/master/workbooks)
+- It's also possible to [embed Mistral Workflows in THT](https://review.openstack.org/#/c/404499/6/extraconfig/tasks/tendrl-workflow.yaml)
+
+Zaqar
+-----
+- The [Zaqar](https://wiki.openstack.org/wiki/Zaqar#Zaqar) queuing service is not a replacement for RabbitMQ; it's a queue for cloud users not cloud operators similar to Amzon's SQS. 
+- Zaqar was [changed](https://specs.openstack.org/openstack/zaqar-specs/specs/newton/mistral-notifications.html) to allow a message to a Zaqar queue to trigger a Mistral workflow.
+- Each TripleO workflow creates a Zaqar queue to send progress
+  information back to the client (CLI or web UI) [diagram](https://github.com/fultonj/mistral/blob/master/101/shardys_mistral_tripleo_slide.png)
+- TripleO's workflows post messages to the 'tripleo' Zaqar queue; e.g. see [scale.yaml](https://github.com/openstack/tripleo-common/blob/156d2c/workbooks/scale.yaml#L31)
+- If a failed workflow appears in `mistral execution-list`, check that Zaqar is running (`sudo systemctl | grep zaqar`) and the logs `/var/log/mistral/{engine.log,executor.log}`
+- Workflows can be paused to wait for user input before being sent down the Zaqar queue as per [d0ugal's interactive workflow example](http://www.dougalmatthews.com/2017/Jan/31/interactive-mistral-workflows-over-zaqar)
 
 Extending TripleO's Actions
 ---------------------------
-
 - You can [write your own](http://docs.openstack.org/developer/mistral/developer/creating_custom_action.html) custom Mistral actions in Python
 - See how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg#62)
-
+- Restart Mistral to run your action as described in [Action Development](https://github.com/openstack/tripleo-common#action-development) after writing your actions as described below.
 ```
 git clone https://git.openstack.org/openstack/tripleo-common.git
 cd tripleo-common/tripleo_common/actions
@@ -127,6 +125,5 @@ git checkout -b my_action
 vim my_action.py
 vim ../../setup.cfg
 ```
-
-- Restart Mistral to run your action as descrbed in [Action Development](https://github.com/openstack/tripleo-common#action-development) if you want to add to the TripleO Actions
+- [Example](https://review.openstack.org/#/c/413229) of adding a workflow to TripleO to configure part of Swift
 
