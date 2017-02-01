@@ -1,16 +1,37 @@
 ---
 version: '2.0'
+name: flowcontrol
+description: http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control
 
-flow_control:
-  input:
-    - x: false
+workflows:
+  
+  flow_control:
+    input:
+      - x: false
 
-  tasks:
-    task_switch:
-      on-success:
-        - task_a: <% $.x = true %>
-        - task_b: <% $.x != true %>
-    task_a:
-      action: std.echo output="x is true"
-    task_b:
-      action: std.echo output="x is not true"
+    tasks:
+      task_switch:
+        on-success:
+          - task_a: <% $.x = true %>
+          - task_b: <% $.x != true %>
+      task_a:
+        action: std.echo output="x is true"
+      task_b:
+        action: std.echo output="x is not true"
+
+  flow_control_triple:
+    input:
+      - letter
+
+    tasks:
+      task_switch:
+        on-success:
+          - letter_a: <% $.letter = 'a' %>
+          - letter_a_or_b: <% $.letter in ['a', 'b'] %>
+          - letter_other: <% not $.letter in ['a', 'b'] %>
+      letter_a:
+        action: std.echo output="letter is a"
+      letter_a_or_b:
+        action: std.echo output="letter is a or b"
+      letter_other:
+        action: std.echo output="letter is not a or b"

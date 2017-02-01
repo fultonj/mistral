@@ -1,76 +1,180 @@
 
-[stack@undercloud 101]$ mistral workflow-create flow_control.yaml 
-+-----------------+--------------+-----------------+--------+---------+-----------------+------------+
-| ID              | Name         | Project ID      | Tags   | Input   | Created at      | Updated at |
-+-----------------+--------------+-----------------+--------+---------+-----------------+------------+
-| dae451ca-5009   | flow_control | cca2560a41ef4d9 | <none> | x=False | 2017-01-31      | None       |
-| -4a5e-89ba-     |              | aab4d168146d105 |        |         | 22:37:33        |            |
-| a5ba83db46c3    |              | 18              |        |         |                 |            |
-+-----------------+--------------+-----------------+--------+---------+-----------------+------------+
-[stack@undercloud 101]$
+Regsiter the workbook (different from a workflow):
 
+[stack@undercloud 101]$ mistral workbook-create flow_control.yaml 
++------------+---------------------+
+| Field      | Value               |
++------------+---------------------+
+| Name       | flowcontrol         |
+| Tags       | <none>              |
+| Created at | 2017-02-01 14:39:41 |
+| Updated at | None                |
++------------+---------------------+
+[stack@undercloud 101]$ 
 
 [stack@undercloud 101]$ mistral execution-create flow_control 
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | ab871018-ed87-4cec-ac78-13a455bef695 |
+| ID                | 9a12bcaa-b872-42b2-8a2c-7ca0d9b60a88 |
 | Workflow ID       | dae451ca-5009-4a5e-89ba-a5ba83db46c3 |
 | Workflow name     | flow_control                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
 | State             | RUNNING                              |
 | State info        | None                                 |
-| Created at        | 2017-01-31 22:39:40                  |
-| Updated at        | 2017-01-31 22:39:40                  |
+| Created at        | 2017-02-01 14:40:53                  |
+| Updated at        | 2017-02-01 14:40:53                  |
 +-------------------+--------------------------------------+
-[stack@undercloud 101]$ 
-
-[stack@undercloud 101]$ UUID=ab871018-ed87-4cec-ac78-13a455bef695
-[stack@undercloud 101]$ mistral execution-get $UUID
+[stack@undercloud 101]$ UUID=9a12bcaa-b872-42b2-8a2c-7ca0d9b60a88
+[stack@undercloud 101]$  mistral execution-get $UUID
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | ab871018-ed87-4cec-ac78-13a455bef695 |
+| ID                | 9a12bcaa-b872-42b2-8a2c-7ca0d9b60a88 |
 | Workflow ID       | dae451ca-5009-4a5e-89ba-a5ba83db46c3 |
 | Workflow name     | flow_control                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
 | State             | SUCCESS                              |
 | State info        | None                                 |
-| Created at        | 2017-01-31 22:39:40                  |
-| Updated at        | 2017-01-31 22:39:41                  |
+| Created at        | 2017-02-01 14:40:53                  |
+| Updated at        | 2017-02-01 14:40:54                  |
 +-------------------+--------------------------------------+
-[stack@undercloud 101]$ 
-
 [stack@undercloud 101]$ mistral execution-get-output $UUID
 {
     "__task_execution": {
-        "id": "7e3ae758-4841-4c0a-8b0f-893b806791ce", 
+        "id": "3439f194-8909-4841-a42d-d4a0b30e6e72", 
         "name": "task_b"
     }
 }
 [stack@undercloud 101]$ 
 
+Run the same flow_control workflow, within the workbook, with an
+argument:
+
 [stack@undercloud 101]$ mistral execution-create flow_control '{"x": true}'
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | 93530a7d-c195-479a-9080-a8234240181c |
+| ID                | 591e49f3-ea45-403a-b20c-bed3f08ed880 |
 | Workflow ID       | dae451ca-5009-4a5e-89ba-a5ba83db46c3 |
 | Workflow name     | flow_control                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
 | State             | RUNNING                              |
 | State info        | None                                 |
-| Created at        | 2017-01-31 22:43:22                  |
-| Updated at        | 2017-01-31 22:43:22                  |
+| Created at        | 2017-02-01 14:42:27                  |
+| Updated at        | 2017-02-01 14:42:27                  |
 +-------------------+--------------------------------------+
-[stack@undercloud 101]$ mistral execution-get-output 93530a7d-c195-479a-9080-a8234240181c
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$  mistral execution-get-output 591e49f3-ea45-403a-b20c-bed3f08ed880
 {
     "__task_execution": {
-        "id": "191fae26-9281-4a4c-888e-71bf74a84500", 
+        "id": "f2e75704-432b-4743-b052-b04a49d452bc", 
         "name": "task_a"
     }
 }
 [stack@undercloud 101]$ 
+
+So by passing a different param, a different task could be run.
+
+Now let's run a different workflow within the workbook.
+
+[stack@undercloud 101]$ mistral execution-create flowcontrol.flow_control_triple '{"letter": "a"}'
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 08383847-f9b4-4ae7-88cf-a790d1be9c91 |
+| Workflow ID       | 12041424-3ce6-4d81-9515-9c543ec4b4a7 |
+| Workflow name     | flowcontrol.flow_control_triple      |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-02-01 14:45:31                  |
+| Updated at        | 2017-02-01 14:45:31                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ UUID=08383847-f9b4-4ae7-88cf-a790d1be9c91
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-get $UUID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 08383847-f9b4-4ae7-88cf-a790d1be9c91 |
+| Workflow ID       | 12041424-3ce6-4d81-9515-9c543ec4b4a7 |
+| Workflow name     | flowcontrol.flow_control_triple      |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | SUCCESS                              |
+| State info        | None                                 |
+| Created at        | 2017-02-01 14:45:31                  |
+| Updated at        | 2017-02-01 14:45:31                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-get-output $UUID
+{
+    "__task_execution": {
+        "id": "893a0f17-6a56-4c97-a5ed-2ff7ae85a1a1", 
+        "name": "letter_a"
+    }
+}
+[stack@undercloud 101]$ 
+
+Try it with different input:
+
+[stack@undercloud 101]$ mistral execution-create flowcontrol.flow_control_triple '{"letter": "b"}'
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | f35d73ae-288c-4548-9799-b352d1b1f86c |
+| Workflow ID       | 12041424-3ce6-4d81-9515-9c543ec4b4a7 |
+| Workflow name     | flowcontrol.flow_control_triple      |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-02-01 14:47:59                  |
+| Updated at        | 2017-02-01 14:47:59                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ UUID=f35d73ae-288c-4548-9799-b352d1b1f86c
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-get-output $UUID
+{
+    "__task_execution": {
+        "id": "2e524f8e-2cd1-4b42-955d-c4a25b414e83", 
+        "name": "letter_a_or_b"
+    }
+}
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-create flowcontrol.flow_control_triple '{"letter": "c"}'
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 8b17c500-3468-40b7-8d56-39b65c6a8eea |
+| Workflow ID       | 12041424-3ce6-4d81-9515-9c543ec4b4a7 |
+| Workflow name     | flowcontrol.flow_control_triple      |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-02-01 14:48:42                  |
+| Updated at        | 2017-02-01 14:48:42                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ UUID=8b17c500-3468-40b7-8d56-39b65c6a8eea
+[stack@undercloud 101]$ mistral execution-get-output $UUID
+{
+    "__task_execution": {
+        "id": "b9e6bfb1-01f0-48c2-bf67-a615963f1eb9", 
+        "name": "letter_other"
+    }
+}
+[stack@undercloud 101]$ 
+
+So we should now have an idea of how to control flow in workflows.
+We also have an example of adding multiple workflows into a workbook. 
