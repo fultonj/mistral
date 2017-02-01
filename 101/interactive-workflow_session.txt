@@ -1,0 +1,88 @@
+[stack@undercloud 101]$ mistral workflow-create interactive-workflow.yaml 
++---------------+---------------+---------------+--------+---------------+-----------------+------------+
+| ID            | Name          | Project ID    | Tags   | Input         | Created at      | Updated at |
++---------------+---------------+---------------+--------+---------------+-----------------+------------+
+| 81d377a1-287a | interactive-  | cca2560a41ef4 | <none> | input_queue   | 2017-02-01      | None       |
+| -4963-b3d8-6d | workflow      | d9aab4d168146 |        | =workflow-    | 19:50:11        |            |
+| 7013eadc12    |               | d10518        |        | inpu...       |                 |            |
++---------------+---------------+---------------+--------+---------------+-----------------+------------+
+[stack@undercloud 101]$ 
+
+[stack@undercloud 101]$ mistral execution-create interactive-workflow
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 451109b1-30b0-40b3-a1e7-0fcd57f6563a |
+| Workflow ID       | 81d377a1-287a-4963-b3d8-6d7013eadc12 |
+| Workflow name     | interactive-workflow                 |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-02-01 19:51:07                  |
+| Updated at        | 2017-02-01 19:51:07                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ UUID=451109b1-30b0-40b3-a1e7-0fcd57f6563a
+[stack@undercloud 101]$ 
+
+When the workflow moves to the first task it will move to the paused state:
+
+[stack@undercloud 101]$ mistral execution-list | tail -2 | head -1
+| 451109b1-30b0-40b3-a1e7-0fcd57f6563a | 81d377a1-287a-4963-b3d8-6d7013eadc12 | interactive-workflow            |             | <none>            | PAUSED  | None                         | 2017-02-01 19:51:07 | 2017-02-01 19:51:08 |
+[stack@undercloud 101]$ 
+
+There is now a message in Zaqar. Use the Mistral action
+zaqar.queue_pop to get it:
+
+
+[stack@undercloud 101]$ mistral run-action zaqar.queue_pop '{"queue_name": "workflow-output"}'
+{"result": [{"body": "Send some input to 'workflow-input'", "age": 184, "queue": {"_metadata": null, "client": null, "_name": "workflow-output"}, "href": null, "ttl": 3600, "_id": "58923c2c7dcad3065619a606"}]}
+[stack@undercloud 101]$ 
+
+pop, like most data structure pop operations, updates the data
+structure when used: 
+
+[stack@undercloud 101]$ mistral run-action zaqar.queue_pop '{"queue_name": "workflow-output"}'
+{"result": []}
+[stack@undercloud 101]$ 
+
+Anyway, from the first time we ran that command we have a message to
+"Send some input to 'workflow-input'". Let's do that.
+
+[stack@undercloud 101]$ mistral run-action zaqar.queue_post '{"queue_name": "workflow-input", "messages":{"body": {"testing": 123}}}'
+{"result": {"resources": ["/v2/queues/workflow-input/messages/58923db57dcad3065619a608"]}}
+[stack@undercloud 101]$ 
+
+So task.request_user_input asked for input on the input-queue and that
+input was now provided. The task.read_user_input should now get it but 
+it pause-before: true and is still paused: 
+
+[stack@undercloud 101]$ mistral execution-list | tail -2 | head -1| 451109b1-30b0-40b3-a1e7-0fcd57f6563a | 81d377a1-287a-4963-b3d8-6d7013eadc12 | interactive-workflow            |             | <none>            | PAUSED  | None                         | 2017-02-01 19:51:07 | 2017-02-01 19:51:08 |
+[stack@undercloud 101]$ 
+
+Let's unpause it:
+
+[stack@undercloud 101]$ mistral execution-update -s RUNNING $UUID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 451109b1-30b0-40b3-a1e7-0fcd57f6563a |
+| Workflow ID       | 81d377a1-287a-4963-b3d8-6d7013eadc12 |
+| Workflow name     | interactive-workflow                 |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-02-01 19:51:07                  |
+| Updated at        | 2017-02-01 20:03:34                  |
++-------------------+--------------------------------------+
+[stack@undercloud 101]$ 
+
+This should have resulted in reading the message we sent from the
+input queue and then moving to the done task which sends the message
+back to the user via the workflow-output queue. We can then read that
+message like this: 
+
+[stack@undercloud 101]$ mistral run-action zaqar.queue_pop '{"queue_name": "workflow-output"}'
+{"result": [{"body": "You sent: '{u'testing': 123}'", "age": 112, "queue": {"_metadata": null, "client": null, "_name": "workflow-output"}, "href": null, "ttl": 3600, "_id": "58923f167dcad3065619a609"}]}
+[stack@undercloud 101]$ 

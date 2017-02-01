@@ -1,0 +1,37 @@
+---
+version: '2.0'
+
+interactive-workflow:
+
+  input:
+    - input_queue: "workflow-input"
+    - output_queue: "workflow-output"
+
+  tasks:
+
+    request_user_input:
+      action: zaqar.queue_post
+      retry: count=5 delay=1
+      input:
+        queue_name: <% $.output_queue %>
+        messages:
+          body: "Send some input to '<% $.input_queue %>'"
+      on-success: read_user_input
+
+    read_user_input:
+      pause-before: true
+      action: zaqar.queue_pop
+      input:
+        queue_name: <% $.input_queue %>
+      publish:
+        user_input: <% task(read_user_input).result[0].body %>
+      on-success: done
+
+    done:
+      action: std.echo output=<% $.user_input %>
+      action: zaqar.queue_post
+      retry: count=5 delay=1
+      input:
+        queue_name: <% $.output_queue %>
+        messages:
+          body: "You sent: '<% $.user_input %>'"

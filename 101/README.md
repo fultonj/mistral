@@ -111,7 +111,13 @@ Zaqar
   information back to the client (CLI or web UI). See [diagram](https://raw.githubusercontent.com/fultonj/mistral/master/101/shardys_mistral_tripleo_slide.png)
 - TripleO's workflows post messages to the 'tripleo' Zaqar queue; e.g. see [scale.yaml](https://github.com/openstack/tripleo-common/blob/156d2c/workbooks/scale.yaml#L31)
 - If a failed workflow appears in `mistral execution-list`, check that Zaqar is running (`sudo systemctl | grep zaqar`) and the logs `/var/log/mistral/{engine.log,executor.log}`
+
+
+Interactive Zaqar
+-----------------
 - Workflows can be paused to wait for user input before being sent down the Zaqar queue as per [d0ugal's interactive workflow example](http://www.dougalmatthews.com/2017/Jan/31/interactive-mistral-workflows-over-zaqar)
+- [interactive-workflow.yaml](https://github.com/fultonj/mistral/blob/master/101/interactive-workflow.yaml) 
+- [interactive-workflow_session.txt](https://github.com/fultonj/mistral/blob/master/101/interactive-workflow_session.txt)
 
 Extending TripleO's Actions
 ---------------------------
@@ -126,5 +132,4 @@ git checkout -b my_action
 vim my_action.py
 vim ../../setup.cfg
 ```
-
 
