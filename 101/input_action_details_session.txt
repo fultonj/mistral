@@ -1,6 +1,6 @@
 
 
-[stack@undercloud 101]$ mistral workflow-create doc_example.yaml 
+[stack@undercloud 101]$ mistral workflow-create input_action_details.yaml 
 +-------------------+-------------+-------------------+--------+-------+-------------------+------------+
 | ID                | Name        | Project ID        | Tags   | Input | Created at        | Updated at |
 +-------------------+-------------+-------------------+--------+-------+-------------------+------------+

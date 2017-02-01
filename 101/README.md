@@ -74,8 +74,8 @@ Terms
   tracks the _state_ of an action, task, or workflow, e.g. `mistral 
   mistral execution-create hello_world`. 
 
-More on Actions
----------------
+Actions
+-------
 
 - Workflows, Tasks, Workbooks, and Executions let you organize your _Actions_. 
 - Actions are where the power comes from
@@ -83,22 +83,51 @@ More on Actions
 - [Ad-hoc actions](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#ad-hoc-actions) are just wrappers around System actions
 - Actions can be run direclty on the command line, e.g. `mistral run-action std.echo '{"output": "Hello Workflow!"}'`.
 
-### OpenStack Actions
+OpenStack Actions
+-----------------
+
 - All calls made by OpenStack's python-client are [available](https://github.com/openstack/mistral/blob/master/mistral/actions/openstack/mapping.json) as Mistral actions. 
 - Compare `mistral action-list | grep cinder` to `mistral action-list | grep nova`
 - Run the command `mistral run-action neutron.list_networks`
 - Look at the output of `mistral action-get nova.servers_create`
 - [See](http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#yaml-example) how to launch a Nova instance with Mistral 
 
-### TripleO Actions
-- You can [write your own](http://docs.openstack.org/developer/mistral/developer/creating_custom_action.html) custom Mistral actions in Python
-- TripleO comes with its own [Actions](https://github.com/openstack/tripleo-common/tree/master/tripleo_common/actions) (see how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg))
-- See [Action Development](https://github.com/openstack/tripleo-common#action-development) if you want to add to the TripleO Actions
-- See also [TripleO Workbooks](https://github.com/openstack/tripleo-common/tree/master/workbooks)
+Workflow Input and Viewing Actions
+----------------------------------
+
+- [Example from the docs on viewing actions and passing input to workflows](http://docs.openstack.org/developer/mistral/quickstart.html) 
+-
+[input_action_details.yaml](https://github.com/fultonj/mistral/blob/master/101/input_action_details.yaml) 
+- [input_action_details_session.txt](https://github.com/fultonj/mistral/blob/master/101/input_action_details_session.txt)
+
+Flow Control and Using Workbooks
+--------------------------------
+
+- [d0ugal's flow control example](http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control)
+- [flow_control.yaml](https://github.com/fultonj/mistral/blob/master/101/flow_control.yaml) 
+- [flow_control_session.txt](https://github.com/fultonj/mistral/blob/master/101/flow_control_session.txt)
+
+
+TripleO Actions
+---------------
+
 - See `mistral action-list | grep tripleo`
+- TripleO comes with its [Mistral Actions](https://github.com/openstack/tripleo-common/tree/master/tripleo_common/actions) 
+- TripleO comes with its [Mistral Workbooks](https://github.com/openstack/tripleo-common/tree/master/workbooks)
 
-Exercises
----------
+Extending TripleO's Actions
+---------------------------
 
-- [Example from the docs](http://docs.openstack.org/developer/mistral/quickstart.html) | [doc_example.yaml](https://github.com/fultonj/mistral/blob/master/101/doc_example.yaml) | [doc_example_session.txt](https://github.com/fultonj/mistral/blob/master/101/doc_example_session.txt)
-- [d0ugal's flow control example](http://www.dougalmatthews.com/2017/Jan/09/mistral-flow-control) | [flow_control.yaml](https://github.com/fultonj/mistral/blob/master/101/flow_control.yaml) | [flow_control_session.txt](https://github.com/fultonj/mistral/blob/master/101/flow_control_session.txt)
+- You can [write your own](http://docs.openstack.org/developer/mistral/developer/creating_custom_action.html) custom Mistral actions in Python
+- See how these Python files hook into [setup.cfg](https://github.com/openstack/tripleo-common/blob/master/setup.cfg#62)
+
+```
+git clone https://git.openstack.org/openstack/tripleo-common.git
+cd tripleo-common/tripleo_common/actions
+git checkout -b my_action
+vim my_action.py
+vim ../../setup.cfg
+```
+
+- Restart Mistral to run your action as descrbed in [Action Development](https://github.com/openstack/tripleo-common#action-development) if you want to add to the TripleO Actions
+
