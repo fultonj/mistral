@@ -96,8 +96,7 @@ Workflow Input and Viewing Actions
 ----------------------------------
 
 - [Example from the docs on viewing actions and passing input to workflows](http://docs.openstack.org/developer/mistral/quickstart.html) 
--
-[input_action_details.yaml](https://github.com/fultonj/mistral/blob/master/101/input_action_details.yaml) 
+- [input_action_details.yaml](https://github.com/fultonj/mistral/blob/master/101/input_action_details.yaml) 
 - [input_action_details_session.txt](https://github.com/fultonj/mistral/blob/master/101/input_action_details_session.txt)
 
 Flow Control and Using Workbooks
