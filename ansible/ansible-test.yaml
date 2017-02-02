@@ -1,0 +1,14 @@
+---
+version: '2.0'
+
+ansible-test:
+  tasks:
+    test_ansible:
+      action: ansible
+      input:
+        hosts: 'all'
+        module: ping
+        module_args: ''
+        remote_user: heat-admin
+        become: false
+        become_user: root
