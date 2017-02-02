@@ -12,6 +12,9 @@ Mistral and Ansible
 For the impatient
 -----------------
 ```
+ssh stack@undercloud
+git clone https://github.com/fultonj/mistral.git
+cd mistral/ansible
 ./init.sh
 ./ansible-inventory.sh
 ./ansible-test.sh
