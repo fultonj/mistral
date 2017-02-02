@@ -1,42 +1,43 @@
 +--------------------------------------+--------------+----------------------------------+--------+-------+---------------------+---------------------+
 | ID                                   | Name         | Project ID                       | Tags   | Input | Created at          | Updated at          |
 +--------------------------------------+--------------+----------------------------------+--------+-------+---------------------+---------------------+
-| 443c77ef-9b32-4c18-b61a-077b64fbe3bd | ansible-test | cca2560a41ef4d9aab4d168146d10518 | <none> |       | 2017-02-01 22:44:17 | 2017-02-02 16:37:13 |
+| 443c77ef-9b32-4c18-b61a-077b64fbe3bd | ansible-test | cca2560a41ef4d9aab4d168146d10518 | <none> |       | 2017-02-01 22:44:17 | 2017-02-02 18:58:21 |
 +--------------------------------------+--------------+----------------------------------+--------+-------+---------------------+---------------------+
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | de602333-478d-458e-9839-171013c7b575 |
+| ID                | ec1b936e-64a7-4346-b8b3-d4692617dd3d |
 | Workflow ID       | 443c77ef-9b32-4c18-b61a-077b64fbe3bd |
 | Workflow name     | ansible-test                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
 | State             | RUNNING                              |
 | State info        | None                                 |
-| Created at        | 2017-02-02 16:38:37                  |
-| Updated at        | 2017-02-02 16:38:37                  |
+| Created at        | 2017-02-02 18:58:23                  |
+| Updated at        | 2017-02-02 18:58:23                  |
 +-------------------+--------------------------------------+
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | de602333-478d-458e-9839-171013c7b575 |
+| ID                | ec1b936e-64a7-4346-b8b3-d4692617dd3d |
 | Workflow ID       | 443c77ef-9b32-4c18-b61a-077b64fbe3bd |
 | Workflow name     | ansible-test                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
 | State             | RUNNING                              |
 | State info        | None                                 |
-| Created at        | 2017-02-02 16:38:37                  |
-| Updated at        | 2017-02-02 16:38:37                  |
+| Created at        | 2017-02-02 18:58:23                  |
+| Updated at        | 2017-02-02 18:58:23                  |
 +-------------------+--------------------------------------+
 Getting output for the following tasks in workflow ansible-test
-+--------------------------------------+-------+---------------+--------------------------------------+---------+------------+
-| ID                                   | Name  | Workflow name | Execution ID                         | State   | State info |
-+--------------------------------------+-------+---------------+--------------------------------------+---------+------------+
-| 5c61ee47-ca35-4274-84b8-b93af79310e7 | ping  | ansible-test  | de602333-478d-458e-9839-171013c7b575 | SUCCESS | None       |
-| 90d21c2e-be7e-456f-9bae-b7c45a68c0be | copy  | ansible-test  | de602333-478d-458e-9839-171013c7b575 | SUCCESS | None       |
-| 6d7394dd-cf33-4b97-9903-a307f5ae3483 | shell | ansible-test  | de602333-478d-458e-9839-171013c7b575 | SUCCESS | None       |
-+--------------------------------------+-------+---------------+--------------------------------------+---------+------------+
++--------------------------------------+----------+---------------+--------------------------------------+---------+------------+
+| ID                                   | Name     | Workflow name | Execution ID                         | State   | State info |
++--------------------------------------+----------+---------------+--------------------------------------+---------+------------+
+| 8e5fe5f1-4d1f-4a29-a911-bd4e7ccc79a3 | ping     | ansible-test  | ec1b936e-64a7-4346-b8b3-d4692617dd3d | SUCCESS | None       |
+| de535988-30be-49de-8d0c-9d2015b47653 | copy     | ansible-test  | ec1b936e-64a7-4346-b8b3-d4692617dd3d | SUCCESS | None       |
+| 463be3a9-b4d9-481f-8c6b-dc1aef824bf3 | shell    | ansible-test  | ec1b936e-64a7-4346-b8b3-d4692617dd3d | SUCCESS | None       |
+| 4e25b690-ee29-4426-ae1e-b6d3fe99fd73 | playbook | ansible-test  | ec1b936e-64a7-4346-b8b3-d4692617dd3d | RUNNING | None       |
++--------------------------------------+----------+---------------+--------------------------------------+---------+------------+
 {
   "stdout": "",
   "stderr": "192.168.24.16 | SUCCESS => {
@@ -51,33 +52,33 @@ Getting output for the following tasks in workflow ansible-test
 }
 {
   "stdout": "",
-  "stderr": "192.168.24.16 | SUCCESS => {
+  "stderr": "192.168.24.11 | SUCCESS => {
     "changed": true, 
-    "checksum": "338aea71ea7880a4f358a29e6069f3256c42497e", 
+    "checksum": "ae2b25ab3f97ab66094d1223831f85697a2e7a74", 
     "dest": "/tmp/file.txt", 
     "gid": 1000, 
     "group": "heat-admin", 
-    "md5sum": "3844e2dd7f057baf93e0bbd65d739ead", 
+    "md5sum": "6cd3faab36d2b253ac7355d7e7c3df60", 
     "mode": "0664", 
     "owner": "heat-admin", 
     "secontext": "unconfined_u:object_r:user_home_t:s0", 
     "size": 29, 
-    "src": "/home/heat-admin/.ansible/tmp/ansible-tmp-1486053521.13-170697973098624/source", 
+    "src": "/home/heat-admin/.ansible/tmp/ansible-tmp-1486061906.64-68348291161454/source", 
     "state": "file", 
     "uid": 1000
 }
-192.168.24.11 | SUCCESS => {
+192.168.24.16 | SUCCESS => {
     "changed": true, 
-    "checksum": "338aea71ea7880a4f358a29e6069f3256c42497e", 
+    "checksum": "ae2b25ab3f97ab66094d1223831f85697a2e7a74", 
     "dest": "/tmp/file.txt", 
     "gid": 1000, 
     "group": "heat-admin", 
-    "md5sum": "3844e2dd7f057baf93e0bbd65d739ead", 
+    "md5sum": "6cd3faab36d2b253ac7355d7e7c3df60", 
     "mode": "0664", 
     "owner": "heat-admin", 
     "secontext": "unconfined_u:object_r:user_home_t:s0", 
     "size": 29, 
-    "src": "/home/heat-admin/.ansible/tmp/ansible-tmp-1486053521.17-67740767091027/source", 
+    "src": "/home/heat-admin/.ansible/tmp/ansible-tmp-1486061906.69-66234548458682/source", 
     "state": "file", 
     "uid": 1000
 }
@@ -87,13 +88,32 @@ Getting output for the following tasks in workflow ansible-test
   "stdout": "",
   "stderr": "192.168.24.16 | SUCCESS | rc=0 >>
 Linux overcloud-controller-0 3.10.0-514.2.2.el7.x86_64 #1 SMP Tue Dec 6 23:06:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
--rw-rw-r--. 1 heat-admin heat-admin 29 Feb  2 16:38 /tmp/file.txt
-Thu Feb  2 16:38:31 UTC 2017
+-rw-rw-r--. 1 heat-admin heat-admin 29 Feb  2 18:58 /tmp/file.txt
+Thu Feb  2 18:58:17 UTC 2017
 removed ‘/tmp/file.txt’
 192.168.24.11 | SUCCESS | rc=0 >>
 Linux overcloud-cephstorage-0 3.10.0-514.2.2.el7.x86_64 #1 SMP Tue Dec 6 23:06:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
--rw-rw-r--. 1 heat-admin heat-admin 29 Feb  2 16:38 /tmp/file.txt
-Thu Feb  2 16:38:31 UTC 2017
+-rw-rw-r--. 1 heat-admin heat-admin 29 Feb  2 18:58 /tmp/file.txt
+Thu Feb  2 18:58:17 UTC 2017
 removed ‘/tmp/file.txt’
+"
+}
+{
+  "stdout": "",
+  "stderr": "
+PLAY [This is a hello-world example] *******************************************
+
+TASK [setup] *******************************************************************
+ok: [192.168.24.16]
+ok: [192.168.24.11]
+
+TASK [Create a file called '/tmp/testfile.txt' with the content 'hello world'.] 
+ok: [192.168.24.16]
+ok: [192.168.24.11]
+
+PLAY RECAP *********************************************************************
+192.168.24.11              : ok=2    changed=0    unreachable=0    failed=0   
+192.168.24.16              : ok=2    changed=0    unreachable=0    failed=0   
+
 "
 }

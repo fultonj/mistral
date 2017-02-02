@@ -38,4 +38,11 @@ ansible-test:
         become_user: root
       publish:
         output: <% task(shell).result %>
-      
+      on-success: playbook
+    playbook:
+      action: ansible-playbook
+      input:
+        playbook: /tmp/hello_playbook.yaml
+        remote_user: heat-admin
+        become: false
+        become_user: root

@@ -2,6 +2,7 @@
 
 WORKFLOW='ansible-test'
 date > /tmp/file.txt
+cp -f hello_playbook.yaml /tmp/
 
 source ~/stackrc
 EXISTS=$(mistral workflow-list | grep $WORKFLOW | wc -l)
