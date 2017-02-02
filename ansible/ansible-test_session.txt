@@ -1,42 +1,99 @@
-[stack@undercloud ansible]$ ./ansible-test.sh 
-+----------------+--------------+----------------+--------+-------+----------------+------------------+
-| ID             | Name         | Project ID     | Tags   | Input | Created at     | Updated at       |
-+----------------+--------------+----------------+--------+-------+----------------+------------------+
-| 443c77ef-      | ansible-test | cca2560a41ef4d | <none> |       | 2017-02-01     | 2017-02-02       |
-| 9b32-4c18      |              | 9aab4d168146d1 |        |       | 22:44:17       | 14:58:31         |
-| -b61a-         |              | 0518           |        |       |                |                  |
-| 077b64fbe3bd   |              |                |        |       |                |                  |
-+----------------+--------------+----------------+--------+-------+----------------+------------------+
++--------------------------------------+--------------+----------------------------------+--------+-------+---------------------+---------------------+
+| ID                                   | Name         | Project ID                       | Tags   | Input | Created at          | Updated at          |
++--------------------------------------+--------------+----------------------------------+--------+-------+---------------------+---------------------+
+| 443c77ef-9b32-4c18-b61a-077b64fbe3bd | ansible-test | cca2560a41ef4d9aab4d168146d10518 | <none> |       | 2017-02-01 22:44:17 | 2017-02-02 16:37:13 |
++--------------------------------------+--------------+----------------------------------+--------+-------+---------------------+---------------------+
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | 3d2e30e8-46cd-40ce-8a56-36af2d4af11e |
+| ID                | de602333-478d-458e-9839-171013c7b575 |
 | Workflow ID       | 443c77ef-9b32-4c18-b61a-077b64fbe3bd |
 | Workflow name     | ansible-test                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
 | State             | RUNNING                              |
 | State info        | None                                 |
-| Created at        | 2017-02-02 14:58:33                  |
-| Updated at        | 2017-02-02 14:58:33                  |
+| Created at        | 2017-02-02 16:38:37                  |
+| Updated at        | 2017-02-02 16:38:37                  |
 +-------------------+--------------------------------------+
 +-------------------+--------------------------------------+
 | Field             | Value                                |
 +-------------------+--------------------------------------+
-| ID                | 3d2e30e8-46cd-40ce-8a56-36af2d4af11e |
+| ID                | de602333-478d-458e-9839-171013c7b575 |
 | Workflow ID       | 443c77ef-9b32-4c18-b61a-077b64fbe3bd |
 | Workflow name     | ansible-test                         |
 | Description       |                                      |
 | Task Execution ID | <none>                               |
-| State             | SUCCESS                              |
+| State             | RUNNING                              |
 | State info        | None                                 |
-| Created at        | 2017-02-02 14:58:33                  |
-| Updated at        | 2017-02-02 14:58:36                  |
+| Created at        | 2017-02-02 16:38:37                  |
+| Updated at        | 2017-02-02 16:38:37                  |
 +-------------------+--------------------------------------+
+Getting output for the following tasks in workflow ansible-test
++--------------------------------------+-------+---------------+--------------------------------------+---------+------------+
+| ID                                   | Name  | Workflow name | Execution ID                         | State   | State info |
++--------------------------------------+-------+---------------+--------------------------------------+---------+------------+
+| 5c61ee47-ca35-4274-84b8-b93af79310e7 | ping  | ansible-test  | de602333-478d-458e-9839-171013c7b575 | SUCCESS | None       |
+| 90d21c2e-be7e-456f-9bae-b7c45a68c0be | copy  | ansible-test  | de602333-478d-458e-9839-171013c7b575 | SUCCESS | None       |
+| 6d7394dd-cf33-4b97-9903-a307f5ae3483 | shell | ansible-test  | de602333-478d-458e-9839-171013c7b575 | SUCCESS | None       |
++--------------------------------------+-------+---------------+--------------------------------------+---------+------------+
 {
-    "__task_execution": {
-        "id": "6e02c1d1-ad1c-4de9-a546-4a0500cca1c3", 
-        "name": "ping"
-    }
+  "stdout": "",
+  "stderr": "192.168.24.16 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
 }
-[stack@undercloud ansible]$ 
+192.168.24.11 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+"
+}
+{
+  "stdout": "",
+  "stderr": "192.168.24.16 | SUCCESS => {
+    "changed": true, 
+    "checksum": "338aea71ea7880a4f358a29e6069f3256c42497e", 
+    "dest": "/tmp/file.txt", 
+    "gid": 1000, 
+    "group": "heat-admin", 
+    "md5sum": "3844e2dd7f057baf93e0bbd65d739ead", 
+    "mode": "0664", 
+    "owner": "heat-admin", 
+    "secontext": "unconfined_u:object_r:user_home_t:s0", 
+    "size": 29, 
+    "src": "/home/heat-admin/.ansible/tmp/ansible-tmp-1486053521.13-170697973098624/source", 
+    "state": "file", 
+    "uid": 1000
+}
+192.168.24.11 | SUCCESS => {
+    "changed": true, 
+    "checksum": "338aea71ea7880a4f358a29e6069f3256c42497e", 
+    "dest": "/tmp/file.txt", 
+    "gid": 1000, 
+    "group": "heat-admin", 
+    "md5sum": "3844e2dd7f057baf93e0bbd65d739ead", 
+    "mode": "0664", 
+    "owner": "heat-admin", 
+    "secontext": "unconfined_u:object_r:user_home_t:s0", 
+    "size": 29, 
+    "src": "/home/heat-admin/.ansible/tmp/ansible-tmp-1486053521.17-67740767091027/source", 
+    "state": "file", 
+    "uid": 1000
+}
+"
+}
+{
+  "stdout": "",
+  "stderr": "192.168.24.16 | SUCCESS | rc=0 >>
+Linux overcloud-controller-0 3.10.0-514.2.2.el7.x86_64 #1 SMP Tue Dec 6 23:06:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+-rw-rw-r--. 1 heat-admin heat-admin 29 Feb  2 16:38 /tmp/file.txt
+Thu Feb  2 16:38:31 UTC 2017
+removed ‘/tmp/file.txt’
+192.168.24.11 | SUCCESS | rc=0 >>
+Linux overcloud-cephstorage-0 3.10.0-514.2.2.el7.x86_64 #1 SMP Tue Dec 6 23:06:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+-rw-rw-r--. 1 heat-admin heat-admin 29 Feb  2 16:38 /tmp/file.txt
+Thu Feb  2 16:38:31 UTC 2017
+removed ‘/tmp/file.txt’
+"
+}
