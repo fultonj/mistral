@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 
-# Install https://github.com/d0ugal/mistral-ansible-actions
-sudo yum install -y python-pip
-sudo pip install mistral-ansible-actions;
+FORK=1
+HACK=1
+
+if [ $FORK -eq 1 ]; then
+    # use my fork unless this merges https://github.com/d0ugal/mistral-ansible-actions/pull/1
+    git clone https://github.com/fultonj/mistral-ansible-actions.git
+    sudo rm -Rf /usr/lib/python2.7/site-packages/mistral_ansible*
+    pushd mistral-ansible-actions
+    sudo python setup.py install
+    popd
+else
+    sudo yum install -y python-pip
+    sudo pip install mistral-ansible-actions;
+fi    
 sudo mistral-db-manage populate;
 sudo systemctl restart openstack-mistral*;
 mistral action-list | grep ansible
+
 echo "Try these:"
 echo "  mistral action-get ansible"
 echo "  mistral action-get ansible-playbook"
 
-id mistral
-sudo mkdir /home/mistral
-sudo chown mistral:mistral /home/mistral/
-sudo cp -r ~/.ssh/ /home/mistral/
-sudo chown -R mistral:mistral /home/mistral/.ssh/
+if [ $HACK -eq 1 ]; then
+    # use this workaround for now
+    id mistral
+    sudo mkdir /home/mistral
+    sudo chown mistral:mistral /home/mistral/
+    sudo cp -r ~/.ssh/ /home/mistral/
+    sudo chown -R mistral:mistral /home/mistral/.ssh/
+fi

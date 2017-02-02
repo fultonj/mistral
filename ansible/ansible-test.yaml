@@ -10,7 +10,7 @@ ansible-test:
         module: ping
         module_args: ''
         remote_user: heat-admin
-        become: false
+        become: true
         become_user: root
       publish:
         output: <% task(ping).result %>
@@ -44,5 +44,5 @@ ansible-test:
       input:
         playbook: /tmp/hello_playbook.yaml
         remote_user: heat-admin
-        become: false
+        become: true
         become_user: root
