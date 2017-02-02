@@ -19,3 +19,14 @@ cd mistral/ansible
 ./ansible-inventory.sh
 ./ansible-test.sh
 ```
+
+ToDo
+----
+
+1. Copying /home/stack/.ssh into /home/mistral is a hack
+2. Copying playbooks into /tmp so mistral@undercloud can access them is a hack 
+3. Build the Ansible Inventory with Mistral
+
+The above issues could probably be solved by using the
+[deployment plan](https://github.com/fultonj/mistral/tree/master/101#tripleo-deployment-plan).
+
