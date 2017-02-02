@@ -7,7 +7,7 @@ Mistral and Ansible
 - Build the ansible inventory based on undercloud nova-list with [ansible-inventory.sh](https://github.com/fultonj/mistral/tree/master/ansible/ansible-inventory.sh)
 - Create and run the workflow with [ansible-test.sh](https://github.com/fultonj/mistral/tree/master/ansible/ansible-test.sh)
 - Edit [ansible-test.yaml](https://github.com/fultonj/mistral/tree/master/ansible/ansible-test.yaml) and re-run ansible-test.sh as needed
-- If it works it should like the output from [ansible-test_session.txt](https://github.com/fultonj/mistral/tree/master/ansible/ansible-test_tession.txt.yaml)
+- If it works it should like the output from [ansible-test_session.txt](https://github.com/fultonj/mistral/tree/master/ansible/ansible-test_session.txt)
 
 For the impatient
 -----------------
