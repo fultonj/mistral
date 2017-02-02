@@ -3,7 +3,7 @@ version: '2.0'
 
 ansible-test:
   tasks:
-    test_ansible:
+    ping:
       action: ansible
       input:
         hosts: 'all'
