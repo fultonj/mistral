@@ -12,3 +12,5 @@ ansible-test:
         remote_user: heat-admin
         become: false
         become_user: root
+      publish:
+        output: <% task(ping).result %>
