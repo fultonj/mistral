@@ -14,35 +14,11 @@ mistral-ceph-ansible:
         become_user: root
       publish:
         output: <% task(ping).result %>
-      on-success: copy
-    copy:
-      action: ansible
-      input:
-        hosts: 'all'
-        module: copy
-        module_args: 'src=/tmp/file.txt dest=/tmp/file.txt'
-        remote_user: heat-admin
-        become: false
-        become_user: root
-      publish:
-        output: <% task(copy).result %>
-      on-success: shell
-    shell:
-      action: ansible
-      input:
-        hosts: 'all'
-        module: shell
-        module_args: 'uname -a; ls -l /tmp/file.txt; cat /tmp/file.txt; rm -f -v /tmp/file.txt'
-        remote_user: heat-admin
-        become: false
-        become_user: root
-      publish:
-        output: <% task(shell).result %>
-      on-success: playbook
-    playbook:
+      on-success: ceph-install
+    ceph-install:
       action: ansible-playbook
       input:
-        playbook: /tmp/hello_playbook.yaml
+        playbook: /tmp/ceph-ansible/site.yml
         remote_user: heat-admin
         become: true
         become_user: root
