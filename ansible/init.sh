@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-FORK=1
+FORK=0
 HACK=1
 
 if [ $FORK -eq 1 ]; then
-    # use my fork unless this merges https://github.com/d0ugal/mistral-ansible-actions/pull/1
+    # (OLD) use fork given https://github.com/d0ugal/mistral-ansible-actions/pull/1
     git clone https://github.com/fultonj/mistral-ansible-actions.git
     sudo rm -Rf /usr/lib/python2.7/site-packages/mistral_ansible*
     pushd mistral-ansible-actions
@@ -25,7 +25,9 @@ echo "  mistral action-get ansible-playbook"
 if [ $HACK -eq 1 ]; then
     # use this workaround for now
     id mistral
-    sudo mkdir /home/mistral
+    if [ ! -d /home/mistral ]; then
+	sudo mkdir /home/mistral
+    fi
     sudo chown mistral:mistral /home/mistral/
     sudo cp -r ~/.ssh/ /home/mistral/
     sudo chown -R mistral:mistral /home/mistral/.ssh/
