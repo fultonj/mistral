@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Filename:                mistral-ceph-ansible.sh
 # Description:             prep and run ceph-ansible
-# Time-stamp:              <2017-02-04 15:51:19 jfulton> 
+# Time-stamp:              <2017-02-04 16:01:29 jfulton> 
 # -------------------------------------------------------
 PREP=1
 RUN=1
@@ -17,6 +17,8 @@ if [ $PREP -eq 1 ]; then
     fi
     cp -r ceph-ansible /tmp/
     cp /tmp/ceph-ansible/site.yml.sample /tmp/ceph-ansible/site.yml
+    cp /tmp/ceph-ansible/group_vars/mons.yml.sample /tmp/ceph-ansible/group_vars/mons.yml
+    # copy in all.yml and osds.yml
     cp group_vars/* /tmp/ceph-ansible/group_vars/
 fi
 # -------------------------------------------------------
