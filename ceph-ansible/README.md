@@ -30,11 +30,12 @@ Assuming the the controller portion of the spec [Deploying TripleO in Containers
 
 In between the above, once Goal2 is achieved is working, I could at
 least provide a dev environment for a Hackthon between TripleO'ers and
-Tendrl'ers where we have TripleO standing up  a Ceph Cluster not
-managed _directly_ by TripleO's Puppet but by something more hands off
-like a Mistral workflow. We could then work on inserting Tendlr in
-place by ceph-ansible but have a working example to reference while
-doing so. 
+Tendrl'ers where we have TripleO standing up a Ceph Cluster not
+managed by TripleO's Puppet but by something more hands-off
+like a Mistral workflow. We could then work on inserting a different 
+Mistral workflow which calls Tendrl instead of ceph-ansible But while 
+is working is happening we would have a working example to reference
+and we would be inserting into an already working larger system.
 
 Goal1 How?
 ----------
