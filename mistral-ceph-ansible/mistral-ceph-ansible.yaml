@@ -1,0 +1,48 @@
+---
+version: '2.0'
+
+mistral-ceph-ansible:
+  tasks:
+    ping:
+      action: ansible
+      input:
+        hosts: 'all'
+        module: ping
+        module_args: ''
+        remote_user: heat-admin
+        become: true
+        become_user: root
+      publish:
+        output: <% task(ping).result %>
+      on-success: copy
+    copy:
+      action: ansible
+      input:
+        hosts: 'all'
+        module: copy
+        module_args: 'src=/tmp/file.txt dest=/tmp/file.txt'
+        remote_user: heat-admin
+        become: false
+        become_user: root
+      publish:
+        output: <% task(copy).result %>
+      on-success: shell
+    shell:
+      action: ansible
+      input:
+        hosts: 'all'
+        module: shell
+        module_args: 'uname -a; ls -l /tmp/file.txt; cat /tmp/file.txt; rm -f -v /tmp/file.txt'
+        remote_user: heat-admin
+        become: false
+        become_user: root
+      publish:
+        output: <% task(shell).result %>
+      on-success: playbook
+    playbook:
+      action: ansible-playbook
+      input:
+        playbook: /tmp/hello_playbook.yaml
+        remote_user: heat-admin
+        become: true
+        become_user: root
