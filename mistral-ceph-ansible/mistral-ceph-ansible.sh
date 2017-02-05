@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Filename:                mistral-ceph-ansible.sh
 # Description:             prep and run ceph-ansible
-# Time-stamp:              <2017-02-04 16:16:49 jfulton> 
+# Time-stamp:              <2017-02-05 12:09:14 jfulton> 
 # -------------------------------------------------------
 PREP=1
 RUN=1
@@ -13,7 +13,7 @@ if [ $PREP -eq 1 ]; then
 	exit 1
     fi
     if [ -d /tmp/ceph-ansible ]; then
-	rm -rf /tmp/ceph-ansible
+	sudo rm -rf /tmp/ceph-ansible
     fi
     cp -r ceph-ansible /tmp/
     cp /tmp/ceph-ansible/site.yml.sample /tmp/ceph-ansible/site.yml
@@ -39,4 +39,9 @@ if [ $RUN -eq 1 ]; then
     for TASK_ID in $(mistral task-list $UUID | awk {'print $2'} | egrep -v 'ID|^$'); do
 	mistral task-get-result $TASK_ID | jq . | sed -e 's/\\n/\n/g' -e 's/\\"/"/g'
     done
+
+    # to make following up easier:
+    echo "UUID: $UUID"
+    echo "TASK_ID: $TASK_ID"
+    echo $TASK_ID > TASK_ID
 fi
