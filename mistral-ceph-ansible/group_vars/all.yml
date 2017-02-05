@@ -115,7 +115,7 @@ ceph_origin: 'upstream' # or 'distro' or 'local'
 # COMMUNITY VERSION
 #ceph_stable: false # use ceph stable branch
 ceph_stable: true # use ceph stable branch
-ceph_stable_key: https://download.ceph.comk/eys/release.asc
+ceph_stable_key: https://download.ceph.com/keys/release.asc
 ceph_stable_release: jewel # ceph stable release
 #ceph_stable_repo: "http://download.ceph.com/debian-{{ ceph_stable_release }}"
 ceph_stable_repo: "http://download.ceph.com/rpm-{{ ceph_stable_release }}"
