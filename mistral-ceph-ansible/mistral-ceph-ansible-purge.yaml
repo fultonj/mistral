@@ -1,0 +1,15 @@
+---
+version: '2.0'
+
+mistral-ceph-ansible-purge:
+  tasks:
+    ceph_purge:
+      action: ansible-playbook
+      input:
+        playbook: /tmp/ceph-ansible/infrastructure-playbooks/purge-cluster.yml
+        remote_user: heat-admin
+        become: true
+        become_user: root
+        extra_vars: ireallymeanit=yes
+      publish:
+        output: <% task(ceph_purge).result %>

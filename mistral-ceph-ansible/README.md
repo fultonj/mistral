@@ -42,6 +42,6 @@ Goal1 How?
 
 - Set up TripleO-quickstart undercloud (works-for-me via [master.sh](https://github.com/fultonj/oooq/blob/master/master.sh))
 - Deploy juice-boxes (works-for-me via [deploy-jeos.sh](https://github.com/fultonj/oooq/blob/master/deploy-jeos.sh))
-- Write _mistral-ceph-ansible.yaml_ as derivative work of [ansible-test.yaml](https://github.com/fultonj/mistral/blob/master/ansible/ansible-test.yaml)
+- Write [mistral-ceph-ansible.yaml](https://github.com/fultonj/mistral/blob/master/ansible/mistral-ceph-ansible.yaml)
   
 The third bullet above is in progress...
