@@ -4,11 +4,13 @@ Mistral triggering Ceph-Ansible POC
 What?
 -----
 
-Goal1 of the project is: 
+The following first goal of the project has been accomplished: 
 
 - Use TripleO to stand up an Overlcoud (`openstack overcloud deploy ...`)
 - Deploy overcloud nodes [without OpenStack services](https://github.com/fultonj/oooq/commit/2e2635f8cae347013737a89341b2cca24b68c28c)
 - Use Mistral to trigger Ceph-Ansible to install Ceph on the Overcloud nodes without OpenStack services
+
+To see how it looks when run see [session1.txt](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/session1.txt).
 
 Why? 
 ----
@@ -42,6 +44,8 @@ Goal1 How?
 
 - Set up TripleO-quickstart undercloud (works-for-me via [master.sh](https://github.com/fultonj/oooq/blob/master/master.sh))
 - Deploy juice-boxes (works-for-me via [deploy-jeos.sh](https://github.com/fultonj/oooq/blob/master/deploy-jeos.sh))
-- Write [mistral-ceph-ansible.yaml](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/mistral-ceph-ansible.yaml)
-  
-The third bullet above is in progress...
+- Run [mistral-ceph-ansible.sh](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/mistral-ceph-ansible.sh) which executes the workflow [mistral-ceph-ansible.yaml](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/mistral-ceph-ansible.yaml)
+
+I have verified that the above works in my virtual environment. The
+run takes less than 30 minutes. An example is in [session1.txt](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/session1.txt).
+
