@@ -209,7 +209,8 @@ ceph_stable_repo: "http://download.ceph.com/rpm-{{ ceph_stable_release }}"
 # avoid cluttering up your ansible repo. If you set `generate_fsid` to
 # false, you *must* generate `fsid` in another way.
 #fsid: "{{ cluster_uuid.stdout }}"
-generate_fsid: true
+# generate_fsid: true
+fsid: b007365e-cc87-11e5-a877-525400330ee0
 
 #cephx: true
 #max_open_files: 131072
