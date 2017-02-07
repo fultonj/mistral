@@ -14,18 +14,6 @@ mistral-ceph-ansible:
         become_user: root
       publish:
         output: <% task(resolv_conf).result %>
-      on-success: zap
-    zap:
-      action: ansible
-      input:
-        hosts: 'osds'
-        module: shell
-        module_args: 'for d in `echo /dev/vd{b,c,d,e,f}`; do sgdisk -Z $d; sgdisk -g $d; done; partprobe'
-        remote_user: heat-admin
-        become: true
-        become_user: root
-      publish:
-        output: <% task(zap).result %>
       on-success: ceph_install
     ceph_install:
       action: ansible-playbook
