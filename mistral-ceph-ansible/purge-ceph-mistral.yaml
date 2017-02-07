@@ -1,7 +1,7 @@
 ---
 version: '2.0'
 
-mistral-ceph-ansible-purge:
+purge-ceph-mistral:
   tasks:
     ceph_purge:
       action: ansible-playbook
