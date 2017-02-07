@@ -6,7 +6,7 @@ mistral-ceph-ansible-purge:
     ceph_purge:
       action: ansible-playbook
       input:
-        playbook: /tmp/ceph-ansible/infrastructure-playbooks/purge-cluster.yml
+        playbook: /tmp/ceph-ansible/purge-cluster.yml
         remote_user: heat-admin
         become: true
         become_user: root
