@@ -236,9 +236,9 @@ fsid: b007365e-cc87-11e5-a877-525400330ee0
 # want to set these differently:
 #
 # For OpenStack on RHEL, you'll want:
-#   rbd_client_directory_owner: "qemu"
-#   rbd_client_directory_group: "libvirtd" (or "libvirt", depending on your version of libvirt)
-#   rbd_client_directory_mode: "0755"
+rbd_client_directory_owner: "qemu"
+rbd_client_directory_group: "libvirt"
+rbd_client_directory_mode: "0755"
 #
 # For OpenStack on Ubuntu or Debian, set:
 #    rbd_client_directory_owner: "libvirt-qemu"
