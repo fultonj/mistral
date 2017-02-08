@@ -21,6 +21,7 @@ dummy:
 #fsid: "{{ cluster_uuid.stdout }}"
 #monitor_secret: "{{ monitor_keyring.stdout }}"
 #cephx: true
+#monitor_secret: AQBtcrVWAAAAABAA4JprB4BR5klHr3mgtqmX0w==
 
 # CephFS
 #cephfs_data: cephfs_data
@@ -71,10 +72,7 @@ openstack_pools:
   - "{{ openstack_metrics_pool }}"  
 
 openstack_keys:
-  - { name: client.glance, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_glance_pool.name }}'" }
-  - { name: client.cinder, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_cinder_pool.name }}, allow rwx pool={{ openstack_nova_pool.name }}, allow rx pool={{ openstack_glance_pool.name }}'"  }
-  - { name: client.cinder-backup, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_cinder_backup_pool.name }}'" }
-  - { name: client.gnocchi, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_metrics_pool.name }}'" }
+- { name: client.openstack, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_cinder_pool }}, allow rwx pool={{ openstack_cinder_backup_pool }}, allow rwx pool={{ openstack_nova_pool }}, allow rwx pool={{ openstack_glance_pool }}, allow rwx pool={{ openstack_metrics_pool }}'" }
   
 ##########
 # DOCKER #
