@@ -21,7 +21,8 @@ dummy:
 #fsid: "{{ cluster_uuid.stdout }}"
 #monitor_secret: "{{ monitor_keyring.stdout }}"
 #cephx: true
-#monitor_secret: AQBtcrVWAAAAABAA4JprB4BR5klHr3mgtqmX0w==
+fsid: b007365e-cc87-11e5-a877-525400330ee0
+monitor_secret: AQBtcrVWAAAAABAA4JprB4BR5klHr3mgtqmX0w==
 
 # CephFS
 #cephfs_data: cephfs_data
