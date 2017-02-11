@@ -263,7 +263,7 @@ ceph_stable_repo: "http://download.ceph.com/rpm-{{ ceph_stable_release }}"
 # You must define either monitor_interface or monitor_address. Preference
 # will go to monitor_interface if both are defined.
 #monitor_interface: interface
-monitor_interface: eth0
+monitor_interface: br-ex
 #monitor_address: 0.0.0.0
 # set to either ipv4 or ipv6, whichever your network is using
 ip_version: ipv4
