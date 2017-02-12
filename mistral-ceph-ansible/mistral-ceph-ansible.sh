@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
 # Filename:                mistral-ceph-ansible.sh
 # Description:             prep and run ceph-ansible
-# Time-stamp:              <2017-02-07 18:39:54 jfulton> 
+# Time-stamp:              <2017-02-12 17:10:44 jfulton> 
 # -------------------------------------------------------
 PREP=1
 RUN=1
 WORKFLOW='mistral-ceph-ansible'
 # -------------------------------------------------------
 if [ $PREP -eq 1 ]; then
+    
+    echo "Updating inventory"
+    bash ansible-inventory.sh
+
+    echo "Zapping Disks"
+    bash zap.sh
+    
     if [ ! -d ceph-ansible ]; then
 	echo "ceph-ansible is missing please run init.sh"
 	exit 1
     fi
+    
     if [ -d /tmp/ceph-ansible ]; then
 	sudo rm -rf /tmp/ceph-ansible
     fi
