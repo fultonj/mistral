@@ -55,6 +55,6 @@ Deploy HCI OpenStack/Ceph where Mistral installed Ceph
 
 - Use [deploy-mistral-ceph-hci.sh](https://github.com/fultonj/oooq/blob/master/deploy-mistral-ceph-hci.sh) to deploy OpenStack to use an external Ceph cluster (which it will self-host)
 - If the playbook is configured to [use br-ex instead of eth0](https://github.com/fultonj/mistral/commit/e8b225911bca755e606d323ca108fbc161c38206), then the [same mistral workflow](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/mistral-ceph-ansible.sh) will install Ceph on the same hosts.
-- Then you just need to [restart nova, cinder, and glance](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/connect_osp_ceph.sh) to have those services use Ceph and you can do a [saity-check.sh](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/saity-check.sh).
+- Then you just need to [restart nova, cinder, and glance](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/connect_osp_ceph.sh) to have those services use Ceph and you can do a [sanity-check.sh](https://github.com/fultonj/mistral/blob/master/mistral-ceph-ansible/sanity-check.sh).
 
 
