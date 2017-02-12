@@ -2,7 +2,7 @@
 # Filename:                connect_osp_ceph.sh
 # Description:             Connects HCI OSP to Ceph
 # Supported Langauge(s):   bash-4.2.x & ansible-1.9.x
-# Time-stamp:              <2016-06-10 13:21:46 jfulton> 
+# Time-stamp:              <2017-02-11 19:31:29 jfulton> 
 # -------------------------------------------------------
 # This script only needs to be run once during initial deployment
 # Restarts glance, cinder, nova so they repoll the new ceph cluster
@@ -27,18 +27,29 @@ fi
 
 # -------------------------------------------------------
 # RESTART OPENSTACK SERVICES 
+PCS=0
 
-echo "Restarting Glance (with Pacemaker)"
-ansible $mon -b -m shell -a "pcs resource disable openstack-glance-api-clone"
-ansible $mon -b -m shell -a "pcs status | grep -A 2 glance-api"
-ansible $mon -b -m shell -a "pcs resource enable openstack-glance-api-clone"
-ansible $mon -b -m shell -a "pcs status | grep -A 2 glance-api"
+if [ $PCS -eq 1 ]; then
+    echo "Restarting Glance (with Pacemaker)"
+    ansible $mon -b -m shell -a "pcs resource disable openstack-glance-api-clone"
+    ansible $mon -b -m shell -a "pcs status | grep -A 2 glance-api"
+    ansible $mon -b -m shell -a "pcs resource enable openstack-glance-api-clone"
+    ansible $mon -b -m shell -a "pcs status | grep -A 2 glance-api"
 
-echo "Restarting Cinder (with Pacemaker)"
-ansible $mon -b -m shell -a "pcs resource disable openstack-cinder-volume "
-ansible $mon -b -m shell -a "pcs status | grep -A 2 openstack-cinder-volume "
-ansible $mon -b -m shell -a "pcs resource enable openstack-cinder-volume "
-ansible $mon -b -m shell -a "pcs status | grep -A 2 openstack-cinder-volume "
+    echo "Restarting Cinder (with Pacemaker)"
+    ansible $mon -b -m shell -a "pcs resource disable openstack-cinder-volume "
+    ansible $mon -b -m shell -a "pcs status | grep -A 2 openstack-cinder-volume "
+    ansible $mon -b -m shell -a "pcs resource enable openstack-cinder-volume "
+    ansible $mon -b -m shell -a "pcs status | grep -A 2 openstack-cinder-volume "
+else
+    declare -a svcs=(openstack-cinder-volume.service openstack-glance-api.service)
+    declare -a states=(status restart)
+    for svc in "${svcs[@]}"; do
+	for state in "${states[@]}"; do
+	    ansible $mon -b -m shell -a "systemctl $state $svc"
+	done
+    done
+fi
 
 echo "Restarting Nova-Compute on all compute nodes (with Systemd)"
 ansible osds -b -m shell -a "systemctl status openstack-nova-compute.service "
