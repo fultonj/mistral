@@ -118,6 +118,16 @@ Interactive Zaqar
 - [interactive-workflow.yaml](https://github.com/fultonj/mistral/blob/master/101/interactive-workflow.yaml) 
 - [interactive-workflow_session.txt](https://github.com/fultonj/mistral/blob/master/101/interactive-workflow_session.txt)
 
+Mistral Execution Environment
+-----------------------------
+- As per the [Spec](https://blueprints.launchpad.net/mistral/+spec/mistral-execution-environment)
+- Use the Mistral API to store variables in an _environment_
+- Start the workflow and specify the environment to be used
+- Use the variables from the environment in the workflow with $.env.my_var
+- [mistral-env.sh](mistral-env.sh)
+- [mistral-env.yaml](mistral-env.yaml)
+
+
 TripleO Deployment Plan
 -----------------------
 - The TripleO _Deployment Plan_ is a Swift container and a Mistral _Environment_
