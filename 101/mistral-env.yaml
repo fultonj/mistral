@@ -1,0 +1,13 @@
+---
+version: "2.0"
+description: this does not work yet
+
+env_exp:
+  tasks:
+    task1:
+      with-items: item in "{% for ip in env().get('service_ips', {}).get('ceph_mon_ctlplane_node_ips', []) %}{{ ip }}{% endfor %}"
+      action: std.echo output=<% $.item %>
+      on-success: task2
+
+    task2:
+      action: std.echo output="Done"
