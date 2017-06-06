@@ -124,10 +124,10 @@ Mistral Execution Environment
 - Use the Mistral API to store variables in an _environment_
 - Start the workflow and specify the environment to be used
 - Use the variables from the environment in the workflow
-- [mistral-env.sh](mistral-env.sh)
-- [mistral-env.yaml](mistral-env.yaml)
-- [mistral-env.sh](mistral-env.sh)
-- [mistral-env-session.txt](mistral-env-session.txt)
+- Environment: [env.yaml](mistral.yaml)
+- Workflow: [mistral-env.yaml](mistral-env.yaml)
+- Session of creating environment and accessing with a workflow: [mistral-env-session.txt](mistral-env-session.txt)
+- Script to run items from the session: [mistral-env.sh](mistral-env.sh)
 
 
 TripleO Deployment Plan
