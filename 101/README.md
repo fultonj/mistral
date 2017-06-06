@@ -123,9 +123,11 @@ Mistral Execution Environment
 - As per the [Spec](https://blueprints.launchpad.net/mistral/+spec/mistral-execution-environment)
 - Use the Mistral API to store variables in an _environment_
 - Start the workflow and specify the environment to be used
-- Use the variables from the environment in the workflow with $.env.my_var
+- Use the variables from the environment in the workflow
 - [mistral-env.sh](mistral-env.sh)
 - [mistral-env.yaml](mistral-env.yaml)
+- [mistral-env.sh](mistral-env.sh)
+- [mistral-env-session.txt](mistral-env-session.txt)
 
 
 TripleO Deployment Plan

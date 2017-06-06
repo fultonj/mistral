@@ -1,0 +1,185 @@
+You can define a mistral environment file in YAML:
+
+(undercloud) [stack@undercloud 101]$ cat env.yaml 
+---
+name: "my_env"
+variables: 
+  foo: bar
+  service_ips:
+    ceph_mon_ctlplane_node_ips:
+      - "192.168.24.13"
+      - "192.168.24.15"
+(undercloud) [stack@undercloud 101]$ 
+
+You can then ask Mistral to store that enviornment:
+
+(undercloud) [stack@undercloud 101]$  mistral environment-create -f yaml env.yaml
+Name: my_env
+Description: null
+Variables: "{\n    \"foo\": \"bar\", \n    \"service_ips\": {\n        \"ceph_mon_ctlplane_node_ips\"\
+  : [\n            \"192.168.24.13\", \n            \"192.168.24.15\"\n        ]\n\
+  \    }\n}"
+Scope: private
+Created at: '2017-06-06 16:31:01'
+Updated at: null
+(undercloud) [stack@undercloud 101]$ 
+
+Observe it in the environment list:
+
+(undercloud) [stack@undercloud 101]$ mistral environment-list
++-------------------+-------------------+---------+-------------------+---------------------+
+| Name              | Description       | Scope   | Created at        | Updated at          |
++-------------------+-------------------+---------+-------------------+---------------------+
+| tripleo           | None              | private | 2017-06-02        |               |
+| .undercloud-      |                   |         | 21:24:12          |                     |
+| config            |                   |         |                   |                     |
+| overcloud         | None              | private | 2017-06-02        | 2017-06-02 23:32:53 |
+|                   |                   |         | 21:24:21          |                     |
+| ssh_keys          | SSH keys for      | private | 2017-06-02        |               |
+|                   | TripleO           |         | 21:24:40          |                     |
+|                   | validations       |         |                   |                     |
+| my_env            | None              | private | 2017-06-06        |               |
+|                   |                   |         | 16:32:41          |                     |
++-------------------+-------------------+---------+-------------------+---------------------+
+(undercloud) [stack@undercloud 101]$ 
+
+Look at it directly:
+
+(undercloud) [stack@undercloud 101]$ mistral environment-get my_env
++-------------+-----------------------------------------+
+| Field       | Value                                   |
++-------------+-----------------------------------------+
+| Name        | my_env                                  |
+| Description |                                   |
+| Variables   | {                                       |
+|             |     "foo": "bar",                       |
+|             |     "service_ips": {                    |
+|             |         "ceph_mon_ctlplane_node_ips": [ |
+|             |             "192.168.24.13",            |
+|             |             "192.168.24.15"             |
+|             |         ]                               |
+|             |     }                                   |
+|             | }                                       |
+| Scope       | private                                 |
+| Created at  | 2017-06-06 16:32:41                     |
+| Updated at  |                                   |
++-------------+-----------------------------------------+
+(undercloud) [stack@undercloud 101]$ 
+
+You can define a workflow which can access the variables in the Mistral environment:
+
+---
+version: "2.0"
+wf:
+  tasks:
+    show_env_synax1:
+      action: std.echo output=<% $.get('__env') %>
+      on-complete: show_env_synax2
+    show_env_synax2:
+      action: std.echo output=<% env() %>
+      on-complete: show_ips
+    show_ips:
+      action: std.echo output=<% env().get('service_ips', {}).get('ceph_mon_ctlplane_node_ips', []) %>
+
+You can then have a Mistral worfklow use it by specifying it as a param as per the documentation.
+
+ mistral execution-create workflow_identifier [workflow_input] [params]
+
+In [params] we specify the environment name. If your workflow has no [workflow_input], then pass '' to make it clear your are specifying the environment name with params as the second argument.
+
+First we create (or update) our workflow:
+
+(undercloud) [stack@undercloud 101]$ mistral workflow-update mistral-env.yaml
++----------------+------+----------------+--------+-------+----------------+----------------+
+| ID             | Name | Project ID     | Tags   | Input | Created at     | Updated at     |
++----------------+------+----------------+--------+-------+----------------+----------------+
+| 18e9daee-06db- | wf   | f282a331978146 |  |       | 2017-06-05     | 2017-06-06     |
+| 42bc-b0bf-     |      | ce988911bc5643 |        |       | 17:04:31       | 19:04:06       |
+| 228c19bf2c99   |      | 5db4           |        |       |                |                |
++----------------+------+----------------+--------+-------+----------------+----------------+
+(undercloud) [stack@undercloud 101]$ 
+
+Next we execute our workflow and indicate that the [workflow_input] is empty by passing '' and after that we pass some JSON specifying that the "env" key should be "my_env" as defined above:
+
+(undercloud) [stack@undercloud 101]$ mistral execution-create wf '' '{"env": "my_env"}'
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | f2c62c11-d5b6-4698-88af-3ef91240b837 |
+| Workflow ID       | 18e9daee-06db-42bc-b0bf-228c19bf2c99 |
+| Workflow name     | wf                                   |
+| Description       |                                      |
+| Task Execution ID |                                |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-06-06 19:05:17                  |
+| Updated at        | 2017-06-06 19:05:17                  |
++-------------------+--------------------------------------+
+(undercloud) [stack@undercloud 101]$ 
+
+As a shortcut we save the UUID of the execution, and use it to get the IDs of the list of tasks:
+(undercloud) [stack@undercloud 101]$ UUID=f2c62c11-d5b6-4698-88af-3ef91240b837
+(undercloud) [stack@undercloud 101]$ mistral task-list $UUID | awk {'print $2'} | egrep -v 'ID|^$'
+edf9576b-e4b7-41c9-9d0d-2486e886ce96
+5e6559d0-d875-4f30-8567-dfd1dbf7ac32
+6a7f2793-41a4-4ef9-8366-4d59f936044d
+(undercloud) [stack@undercloud 101]$ 
+
+Next we make sure our ID maps to the task we want to see the output for:
+
+(undercloud) [stack@undercloud 101]$ mistral task-get edf9576b-e4b7-41c9-9d0d-2486e886ce96
++---------------+--------------------------------------+
+| Field         | Value                                |
++---------------+--------------------------------------+
+| ID            | edf9576b-e4b7-41c9-9d0d-2486e886ce96 |
+| Name          | show_env_synax1                      |
+| Workflow name | wf                                   |
+| Execution ID  | f2c62c11-d5b6-4698-88af-3ef91240b837 |
+| State         | SUCCESS                              |
+| State info    | None                                 |
+| Created at    | 2017-06-06 19:05:17                  |
+| Updated at    | 2017-06-06 19:05:18                  |
++---------------+--------------------------------------+
+(undercloud) [stack@undercloud 101]$
+
+So what was the result of using syntax1?
+
+(undercloud) [stack@undercloud 101]$ mistral task-get-result edf9576b-e4b7-41c9-9d0d-2486e886ce96
+{
+    "foo": "bar", 
+    "service_ips": {
+        "ceph_mon_ctlplane_node_ips": [
+            "192.168.24.13", 
+            "192.168.24.15"
+        ]
+    }
+}
+(undercloud) [stack@undercloud 101]$ 
+
+The environment we passed. Note that the more compact syntax2 does the same thing:
+
+(undercloud) [stack@undercloud 101]$ mistral task-get-result 6a7f2793-41a4-4ef9-8366-4d59f936044d
+{
+    "foo": "bar", 
+    "service_ips": {
+        "ceph_mon_ctlplane_node_ips": [
+            "192.168.24.13", 
+            "192.168.24.15"
+        ]
+    }
+}
+(undercloud) [stack@undercloud 101]$ 
+
+What's nice is that we can specifically pick items out with the env() dictionary as shown in the show_ips task.
+
+(undercloud) [stack@undercloud 101]$ mistral task-get-result 5e6559d0-d875-4f30-8567-dfd1dbf7ac32
+[
+    "192.168.24.13", 
+    "192.168.24.15"
+]
+(undercloud) [stack@undercloud 101]$
+
+As a refresh the output of the task above, came from the following task:
+
+   show_ips:
+      action: std.echo output=<% env().get('service_ips', {}).get('ceph_mon_ctlplane_node_ips', []) %>

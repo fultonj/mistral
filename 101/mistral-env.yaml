@@ -1,8 +1,12 @@
 ---
 version: "2.0"
-
-env_exp:
+wf:
   tasks:
-    task1:
-      with-items: item in ["{% for ip in env().get('service_ips', {}).get('ceph_mon_ctlplane_node_ips', []) %}{{ ip }}{% endfor %}"]
-      action: std.echo output=<% $.item %>
+    show_env_synax1:
+      action: std.echo output=<% $.get('__env') %>
+      on-complete: show_env_synax2
+    show_env_synax2:
+      action: std.echo output=<% env() %>
+      on-complete: show_ips
+    show_ips:
+      action: std.echo output=<% env().get('service_ips', {}).get('ceph_mon_ctlplane_node_ips', []) %>

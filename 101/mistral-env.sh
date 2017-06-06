@@ -4,33 +4,35 @@
 # -------------------------------------------------------
 source ~/stackrc
 HELP=0
-ENVS=0
+MKENV=1
 RUN=1
 if [[ $HELP -eq 1 ]]; then 
-    for cmd in $(mistral --help | grep environment | awk {'print $1'}); do 
+    for cmd in $(mistral --help | egrep environment | awk {'print $1'}); do 
 	echo -e "$cmd\n<---"
 	mistral $cmd; 
 	echo -e "---> \n"
     done
 fi
 
-if [[ $ENVS -eq 1 ]]; then 
-    for env in $(mistral environment-list | awk {'print $2'} | grep -v Name); do 
-	echo -e "$env\n<---"
-	mistral environment-get $env
-	echo -e "---> \n"
-    done
+if [[ $MKENV -eq 1 ]]; then 
+    ENV=my_env
+    EXISTS=$(mistral environment-list | grep $ENV | wc -l)
+    if [[ $EXISTS -gt 0 ]]; then
+	mistral environment-update -f yaml env.yaml
+    else
+	mistral environment-create -f yaml env.yaml
+    fi
 fi
 
 if [[ $RUN -eq 1 ]]; then 
-    WORKFLOW=env_exp
-    EXISTS=$(mistral workbook-list | grep $WORKFLOW | wc -l)
+    WORKFLOW=wf
+    EXISTS=$(mistral workflow-list | grep $WORKFLOW | wc -l)
     if [[ $EXISTS -gt 0 ]]; then
 	mistral workflow-update mistral-env.yaml
     else
 	mistral workflow-create mistral-env.yaml
     fi
-    mistral execution-create $WORKFLOW
+    mistral execution-create $WORKFLOW '' '{"env": "my_env"}'
     UUID=$(mistral execution-list | grep $WORKFLOW | awk {'print $2'} | tail -1)
     if [ -z $UUID ]; then
 	echo "Error: unable to find UUID. Exixting."
