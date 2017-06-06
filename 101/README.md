@@ -124,7 +124,7 @@ Mistral Execution Environment
 - Use the Mistral API to store variables in an _environment_
 - Start the workflow and specify the environment to be used
 - Use the variables from the environment in the workflow
-- Environment: [env.yaml](mistral.yaml)
+- Environment: [env.yaml](env.yaml)
 - Workflow: [mistral-env.yaml](mistral-env.yaml)
 - Session of creating environment and accessing with a workflow: [mistral-env-session.txt](mistral-env-session.txt)
 - Script to run items from the session: [mistral-env.sh](mistral-env.sh)
