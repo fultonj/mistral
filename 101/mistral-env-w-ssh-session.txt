@@ -1,0 +1,84 @@
+Name: my_env
+Description: <none>
+Variables: "{\n    \"foo\": \"bar\", \n    \"service_ips\": {\n        \"ceph_mon_ctlplane_node_ips\"\
+  : [\n            \"192.168.24.13\", \n            \"192.168.24.15\"\n        ]\n\
+  \    }\n}"
+Scope: private
+Created at: '2017-06-07 18:38:45'
+Updated at: <none>
++--------------------------------------+------+----------------------------------+--------+-------+---------------------+---------------------+
+| ID                                   | Name | Project ID                       | Tags   | Input | Created at          | Updated at          |
++--------------------------------------+------+----------------------------------+--------+-------+---------------------+---------------------+
+| 978fe290-5f0a-4caf-aa23-d1c7d20ba105 | wf   | dd66d91bc98a44159111045346da5d0a | <none> |       | 2017-06-07 17:46:01 | 2017-06-07 19:08:34 |
++--------------------------------------+------+----------------------------------+--------+-------+---------------------+---------------------+
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| ID                | 3fb12e5a-5223-40ee-8952-05edf0d7e231 |
+| Workflow ID       | 978fe290-5f0a-4caf-aa23-d1c7d20ba105 |
+| Workflow name     | wf                                   |
+| Description       |                                      |
+| Task Execution ID | <none>                               |
+| State             | RUNNING                              |
+| State info        | None                                 |
+| Created at        | 2017-06-07 19:10:51                  |
+| Updated at        | 2017-06-07 19:10:51                  |
++-------------------+--------------------------------------+
+31e87680-5cb5-485c-b7f9-96c6276fcd0f
++---------------+--------------------------------------+
+| Field         | Value                                |
++---------------+--------------------------------------+
+| ID            | 31e87680-5cb5-485c-b7f9-96c6276fcd0f |
+| Name          | show_key                             |
+| Workflow name | wf                                   |
+| Execution ID  | 3fb12e5a-5223-40ee-8952-05edf0d7e231 |
+| State         | SUCCESS                              |
+| State info    | None                                 |
+| Created at    | 2017-06-07 19:10:52                  |
+| Updated at    | 2017-06-07 19:10:52                  |
++---------------+--------------------------------------+
+"-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA4gtv6SseKEuqfY11f9O8g3QxwR5iSokM9sTHY7MS3wZRI6GB
+Xhe2qxexchiN8w4eHLpjTxgymwtUOKnlzo0Dh93Hj9JfEMF52KyR3xxv28b0RyQH
+RypHFS05368/pUiDwPDE2ZyDuLxUOR+nuuGj441R0wt2Ox5n/luxuZv5BRrIYSsl
+D5pL7sFW0N+5odoMKTHHMxfdojpKAdCmXX6sbqTz1tCC4QMWHdH29xnOVzG3exu2
+vMQbPIk9TKwdxrio1DyC8XJfPyKubSfXL5Q7Yw97yMHURa+s4XBYpQMYwPrJ75Pj
+kXsCLwvIFuC3qKSA8lGto9vHqMdXu/9tYPeM6QIDAQABAoIBAQCHrYfBs/DJDQnL
+jKIPVN8dJBxNJ1imFncik2B+1lioZ1lCgsls2dz5+yG2M0jYsAuhALtlGUgeygEG
+dewLO5b38UW8bPBE1Wy2gnaYLbBygYvUO6rmq1i5PEk1mzIfmlQC9kGhwJFLzDbd
+hsOdp5xAlG2duI6B07Fl+lHF7/nbdmQxwuEuhuASjWD5Ta22lkSGE/uigzxd630p
+Rynu482PUXuTEPIWY35BYoDS9IAustKxw0IDklAytbZVxleB/H7E8URCEyP35lvJ
+v7LYVlM/0q8NE8YnSwTbQZgQ1CQnVvLOar6EfmswGfQEjSAyvXBkrNF0iQ5MUGdy
+JYI3ACkBAoGBAPE94T7+Y0BQBGLs4G3N6R2v5DufBxM5fzvYjn4z42rz20+ZZns6
+RSk+ylvY9LVqlQPQdurvNxJ7Lenx7XLVPsYORcBYcA7gTovZz4fBMbKGJbsZiSKJ
+MNPmEX8/Q4NWrV5sUO3PVHxPaBM7eU5FkZQTfx8BGzSm4G2sRS525b0hAoGBAO/f
+jeZYLStHL0/hoxy1jlfXKZ+oj0jtc/0mr4otW1HOnX/YJfuNEIguqVuNa7uc+ALb
+ZPzn6YMzYAsj1wtcmHlydhJ/wy5Lgtw+jQAomz8zDTpWbDjaK5W/Uckrq7pvdLup
+SJBOQj+f0N7MBmGIax54/hS4uC/K5kIxo+viNk7JAoGACjM2meZBpg98D/66AoqJ
+R8MPIGI591sgARTH+ZgSDoyfAj+XMLCnCfZosfd7aUxHXrDqxkY1CugAafrbslZH
+4DHsSxSyMD7Vs14TQ0cs5cJ8R+vte3NXiC4bIUk4fo4kqHBl/5gbl2H4IZALMf8J
+B7zHTDVMxC4mIRz+k9ddIWECgYEA2nCJh2drEstLcYI4CO/pBWMiO4vDmBTtGG6/
+UqTFUXVHhmGvDSnEEU/02DOsFPj3/ZoPmCQVSW5imyJzNZyIGai7j1Mbyi/npmur
++aYA4oe6FxMWkJtVL5Q/hWQoianv8ulQ9GDgAZKnIg1IDk+txN1H/FTPHm62Szdr
+YGbrL8kCgYBfn1vK8EtncSUS530RCXsjfa1rmyOBHKO48xSp3AnhRW28lbzP6PGW
+dvdnz8/vp0oaaL6TRU4zqGcjzKIZqeiKMoAvLLlx7gr3QSCLZo06rfWXklmuUjGe
+xGV0hcbPUZVnUbDjvXLhmiOu6M2mGEizxUpVLCEMzMn5Mixl4LRE+w==
+-----END RSA PRIVATE KEY-----
+"
+f7ac80bf-3b89-43ee-98d5-100def3bb7db
++---------------+--------------------------------------+
+| Field         | Value                                |
++---------------+--------------------------------------+
+| ID            | f7ac80bf-3b89-43ee-98d5-100def3bb7db |
+| Name          | show_ips                             |
+| Workflow name | wf                                   |
+| Execution ID  | 3fb12e5a-5223-40ee-8952-05edf0d7e231 |
+| State         | SUCCESS                              |
+| State info    | None                                 |
+| Created at    | 2017-06-07 19:10:52                  |
+| Updated at    | 2017-06-07 19:10:52                  |
++---------------+--------------------------------------+
+[
+  "192.168.24.13",
+  "192.168.24.15"
+]

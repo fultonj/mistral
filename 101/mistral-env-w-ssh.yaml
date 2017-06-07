@@ -1,0 +1,14 @@
+---
+version: "2.0"
+wf:
+  tasks:
+    get_private_key:
+      action: mistral.environments_get name='ssh_keys'
+      publish:
+        private_key: <% task(get_private_key).result.variables.private_key %>
+      on-complete: show_key
+    show_key:
+      action: std.echo output=<% $.private_key %>
+      on-complete: show_ips
+    show_ips:
+      action: std.echo output=<% env().get('service_ips', {}).get('ceph_mon_ctlplane_node_ips', []) %>    

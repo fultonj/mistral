@@ -128,7 +128,8 @@ Mistral Execution Environment
 - Workflow: [mistral-env.yaml](mistral-env.yaml)
 - Session of creating environment and accessing with a workflow: [mistral-env-session.txt](mistral-env-session.txt)
 - Script to run items from the session: [mistral-env.sh](mistral-env.sh)
-
+- You can also access other environments, like the ssh_keys environment on a TripleO undercloud, while working with the reference to the one that was passed using [params]: [mistral-env-w-ssh.yaml](mistral-env-w-ssh.yaml) [mistral-env-w-ssh.sh](mistral-env-w-ssh.sh) [mistral-env-w-ssh-session.txt](mistral-env-w-ssh-session.txt)
+- Note that the `mistral.environments_get` action requires a mistral client >3.1.0 as per [https://bugs.launchpad.net/mistral/+bug/1696128/](https://bugs.launchpad.net/mistral/+bug/1696128/)
 
 TripleO Deployment Plan
 -----------------------
