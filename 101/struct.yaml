@@ -1,0 +1,34 @@
+---
+version: '2.0'
+name: struct
+description: TripleO manages Ceph with ceph-ansible
+
+workflows:
+  struct-wf:
+    # allows for additional extra_vars via workflow input
+    input:
+      - ansible_env_variables:
+          ANSIBLE_SSH_RETRIES: '6'
+      - ansible_extra_env_variables:
+          ANSIBLE_CONFIG: /usr/share/ceph-ansible/ansible.cfg
+          ANSIBLE_ACTION_PLUGINS: /usr/share/ceph-ansible/plugins/actions/
+          ANSIBLE_ROLES_PATH: /usr/share/ceph-ansible/roles/
+          ANSIBLE_RETRY_FILES_ENABLED: 'False'
+          ANSIBLE_LOG_PATH: /var/log/mistral/ceph-install-workflow.log
+          ANSIBLE_LIBRARY: /usr/share/ceph-ansible/library/
+          ANSIBLE_SSH_RETRIES: '3'
+          ANSIBLE_HOST_KEY_CHECKING: 'False'
+          DEFAULT_FORKS: '50'
+    tasks:
+      show_env_vars:
+        action: std.echo output=<% $.ansible_env_variables %>
+        on-complete: merge
+      show_default_vars:
+        action: std.echo output=<% $.ansible_extra_env_variables %>
+        on-complete: merge
+      merge:
+        publish:
+          extra_env_variables: <% $.ansible_extra_env_variables.mergeWith($.ansible_env_variables) %>
+        on-complete: show_vars_after
+      show_vars_after:
+        action: std.echo output=<% $.extra_env_variables %>
