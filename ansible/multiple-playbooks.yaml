@@ -1,0 +1,16 @@
+---
+version: '2.0'
+
+ansible-test:
+  descrption: run multiple playbooks using "with-items".
+  input:
+    #- playbooks: '/tmp/hello_playbook.yaml'
+    - playbooks: ['/tmp/hello_playbook.yaml', '/tmp/hello_playbook2.yaml']      
+  tasks:
+    run_playbooks:
+      with-items: playbook in <% let($.playbooks) -> selectCase(isList($), 1).switchCase($, list($)) %>
+      action: tripleo.ansible-playbook
+      input:
+        playbook: <% $.playbook %>
+        remote_user: heat-admin
+        become: false
