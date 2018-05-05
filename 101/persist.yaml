@@ -1,0 +1,79 @@
+---
+version: '2.0'
+name: persist.yaml
+description: poc to persist the ceph-ansible fetch directory in swift
+
+workflows:
+  persist_fetch:
+    input:
+      - container: 'ceph_ansible_fetch_dir'
+    tasks:
+      make_fetch_directory:
+        on-success: verify_container_exists
+        action: tripleo.files.make_temp_dir
+        publish:
+          fetch_directory: <% task().result.path %>
+
+      verify_container_exists:
+        action: swift.head_container container=<% $.container %>
+        on-success: restore_fetch_directory
+        on-error: create_container
+
+      restore_fetch_directory:
+        publish:
+          action: std.echo output="TODO: downloading fetch directory from swift to temp"
+        on-success: finished
+      
+      create_container:
+        action: swift.put_container container=<% $.container %>
+        on-success: populate_new_fetch_directory
+        on-error: create_container_set_status_failed
+
+      populate_new_fetch_directory:
+        on-complete: save_fetch_directory
+        action: tripleo.ansible-playbook
+        input:
+          inventory:
+            undercloud:
+              hosts: localhost
+          remote_user: mistral
+          become: false
+          verbosity: 0
+          ssh_private_key: /home/mistral/.ssh/id_rsa
+          extra_env_variables:
+            ANSIBLE_CALLBACK_WHITELIST: ''
+            ANSIBLE_HOST_KEY_CHECKING: 'False'
+            ANSIBLE_STDOUT_CALLBACK: 'json'
+          playbook:
+            - hosts: undercloud
+              gather_facts: no
+              tasks:
+                - name: write to file
+                  lineinfile:
+                    path: <% $.fetch_directory %>/now
+                    line: "I am foo"
+                    owner: mistral
+                    group: mistral
+                    mode: 0644
+                    state: present
+                    create: yes
+        publish:
+          ansible_output: <% json_parse(task().result.stderr) %>
+          
+      create_container_set_status_failed:
+        publish:
+          action: std.fail
+
+      save_fetch_directory:
+        publish:
+          action: std.echo output="TODO: uploading fetch directory to swift"
+        on-success: finished
+
+      finished:
+        publish:
+          action: std.echo output="We are finished"
+
+      # -------------------------------------------------------
+      #   on-success: purge_fetch_directory
+      # purge_fetch_directory:
+      #   action: tripleo.files.remove_temp_dir path=<% $.fetch_directory %>
