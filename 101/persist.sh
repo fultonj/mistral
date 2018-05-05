@@ -1,5 +1,5 @@
 # Filename:                persist.sh
-# Time-stamp:              <2018-05-04 20:38:04 fultonj> 
+# Time-stamp:              <2018-05-06 13:37:48 fultonj> 
 # -------------------------------------------------------
 source ~/stackrc
 WORKBOOK_DEV=1
@@ -47,9 +47,20 @@ ls -ld $TMP
 sudo ls -l $TMP
 sudo rm -rfv $TMP
 
+echo "Is fetch dir container in swift?"
 openstack container list
 openstack container show ceph_ansible_fetch_dir
 openstack object list ceph_ansible_fetch_dir
 
-echo "Deleting swift container: ceph_ansible_fetch_dir"
+echo "Is content in object?"
+openstack object save ceph_ansible_fetch_dir now_obj
+cat now_obj
+echo ""
+echo "FIX: ^^^^ should be content of file, not path to file"
+
+echo "Delete local downloaded file and its object in swift"
+rm -v now_obj
+openstack object delete ceph_ansible_fetch_dir now_obj
+
+echo "Delete swift container: ceph_ansible_fetch_dir"
 openstack container delete ceph_ansible_fetch_dir
