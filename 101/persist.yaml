@@ -20,9 +20,12 @@ workflows:
         on-error: create_container
 
       restore_fetch_directory:
-        publish:
-          action: std.echo output="TODO2 downloading fetch directory from swift to temp"
+        action: tripleo.files.restore_temp_dir_from_swift
+        input:
+          container: <% $.container %>
+          path: <% $.fetch_directory %>
         on-success: finished
+        on-error: set_status_failed
       
       create_container:
         action: swift.put_container container=<% $.container %>
@@ -61,12 +64,10 @@ workflows:
           ansible_output: <% json_parse(task().result.stderr) %>
           
       save_fetch_directory:
-        # TODO1: store content of file, not pathname of file
-        action: swift.put_object
+        action: tripleo.files.save_temp_dir_to_swift
         input:
           container: <% $.container %>
-          obj: now_obj
-          contents: <% $.fetch_directory %>/now
+          path: <% $.fetch_directory %>
         on-success: finished
         on-error: set_status_failed
 
@@ -76,9 +77,4 @@ workflows:
 
       finished:
         publish:
-          action: std.echo output="We are finished"
-
-      # -------------------------------------------------------
-      #   on-success: purge_fetch_directory
-      # purge_fetch_directory:
-      #   action: tripleo.files.remove_temp_dir path=<% $.fetch_directory %>
+          action: tripleo.files.remove_temp_dir path=<% $.fetch_directory %>

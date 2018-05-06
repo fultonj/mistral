@@ -1,8 +1,29 @@
 # Filename:                persist.sh
-# Time-stamp:              <2018-05-06 13:37:48 fultonj> 
+# Time-stamp:              <2018-05-11 00:32:50 fultonj> 
 # -------------------------------------------------------
 source ~/stackrc
+ACTIONS_DEV=0
 WORKBOOK_DEV=1
+# -------------------------------------------------------
+if [[ $ACTIONS_DEV -gt 0 ]]; then
+    echo "update mistral actions python"
+    pushd /home/stack/tripleo-common
+    sudo rm -Rf /usr/lib/python2.7/site-packages/tripleo_common*
+    sudo python setup.py install
+
+    sudo systemctl restart openstack-mistral-executor
+    sudo systemctl restart openstack-mistral-engine
+    # this loads the actions via entrypoints
+    sudo mistral-db-manage populate
+    # make sure the new actions got loaded
+
+    mistral action-list | grep save_temp_dir_to_swift
+    mistral action-get tripleo.files.save_temp_dir_to_swift
+    mistral action-get tripleo.files.restore_temp_dir_from_swift    
+    mistral action-get tripleo.files.remove_temp_dir
+    popd
+fi
+
 if [[ $WORKBOOK_DEV -gt 0 ]]; then
     WORKBOOK=/home/stack/mistral/101/persist.yaml
     if [[ ! -e $WORKBOOK ]]; then
@@ -43,24 +64,31 @@ for TASK_ID in $(mistral task-list $UUID | awk {'print $2'} | egrep -v 'ID|^$');
 done
 rm /tmp/$UUID
 
+echo "Was tempdir correctly populated?"
 ls -ld $TMP
 sudo ls -l $TMP
-sudo rm -rfv $TMP
+#sudo rm -rfv $TMP
 
+exit 0
 echo "Is fetch dir container in swift?"
 openstack container list
 openstack container show ceph_ansible_fetch_dir
 openstack object list ceph_ansible_fetch_dir
+OBJ=$(openstack object list ceph_ansible_fetch_dir -f value)
 
-echo "Is content in object?"
-openstack object save ceph_ansible_fetch_dir now_obj
-cat now_obj
+exit 0
+echo "Testing $OBJ from contianer"
+mkdir fetch_test
+pushd fetch_test
+openstack object save ceph_ansible_fetch_dir $OBJ
+tar xf $OBJ
+ls
+for f in `ls | grep -v tar.gz`; do echo "file: $f"; echo "---"; cat $f; echo "---"; done
 echo ""
-echo "FIX: ^^^^ should be content of file, not path to file"
+popd
+echo "Delete local downloaded tarball"
+rm -rfv fetch_test
 
-echo "Delete local downloaded file and its object in swift"
-rm -v now_obj
-openstack object delete ceph_ansible_fetch_dir now_obj
-
-echo "Delete swift container: ceph_ansible_fetch_dir"
-openstack container delete ceph_ansible_fetch_dir
+#echo "Delete swift container: ceph_ansible_fetch_dir"
+#openstack object delete ceph_ansible_fetch_dir $OBJ
+#openstack container delete ceph_ansible_fetch_dir
