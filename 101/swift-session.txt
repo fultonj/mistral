@@ -1,0 +1,56 @@
++--------------------+------------------------------------------------------------------------+
+| Field              | Value                                                                  |
++--------------------+------------------------------------------------------------------------+
+| ID                 | 29f33abf-de8c-4a3f-9a13-4ab7d87b4382                                   |
+| Workflow ID        | 49aa3413-c004-455a-87a1-980b1947193d                                   |
+| Workflow name      | tripleo.swift_rings_backup.v1.create_swift_rings_backup_container_plan |
+| Workflow namespace |                                                                        |
+| Description        |                                                                        |
+| Task Execution ID  | <none>                                                                 |
+| Root Execution ID  | <none>                                                                 |
+| State              | RUNNING                                                                |
+| State info         | None                                                                   |
+| Created at         | 2018-08-30 22:39:02                                                    |
+| Updated at         | 2018-08-30 22:39:02                                                    |
++--------------------+------------------------------------------------------------------------+
+Waiting for workflow to finish
+Extracting URLs
+http://192.168.24.1:8080/v1/AUTH_a31356148c3d47df976f6e464882c4c2/overcloud-swift-rings/swift-rings.tar.gz?temp_url_sig=f997f55ae712fc4efffaf9f348dcc77507926568&temp_url_expires=1535753883
+http://192.168.24.1:8080/v1/AUTH_a31356148c3d47df976f6e464882c4c2/overcloud-swift-rings/swift-rings.tar.gz?temp_url_sig=069bc30b83db7e7fd130bb8118e8021d41efb9d5&temp_url_expires=1535753904
+Creating file swift-rings.tar.gz
+-rw-rw-r--. 1 stack stack 18 Aug 30 22:39 swift-rings.tar.gz
+i am bar htE7QAyC
+
+uploading file swift-rings.tar.gz to overcloud-swift-rings with CURL
+-----
+HTTP/1.1 100 Continue
+
+HTTP/1.1 201 Created
+Last-Modified: Thu, 30 Aug 2018 22:39:30 GMT
+Content-Length: 0
+Etag: 6479e55ca8123ded2e2522e514a3043c
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx79e9fa1f382a4dbab89fc-005b887221
+X-Openstack-Request-Id: tx79e9fa1f382a4dbab89fc-005b887221
+Date: Thu, 30 Aug 2018 22:39:29 GMT
+
+-----
+
+downloading foo with curl and tempurl
+-----
+HTTP/1.1 200 OK
+Content-Length: 18
+Accept-Ranges: bytes
+Last-Modified: Thu, 30 Aug 2018 22:39:30 GMT
+Etag: 6479e55ca8123ded2e2522e514a3043c
+X-Timestamp: 1535668769.21536
+Content-Type: application/x-tar
+Content-Disposition: attachment; filename="swift-rings.tar.gz"; filename*=UTF-8''swift-rings.tar.gz
+Expires: Fri, 31 Aug 2018 22:18:03 GMT
+X-Trans-Id: txadd75c4fca014c2d84455-005b887221
+X-Openstack-Request-Id: txadd75c4fca014c2d84455-005b887221
+Date: Thu, 30 Aug 2018 22:39:29 GMT
+
+i am bar htE7QAyC
+-----
+
