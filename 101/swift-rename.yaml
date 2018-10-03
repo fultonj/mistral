@@ -1,0 +1,61 @@
+---
+version: '2.0'
+name: rename.yaml
+description: poc to rename file in swift container
+
+workflows:
+  rename_fetch:
+    input:
+      - container: 'overcloud'
+      - container_suffix: "_ceph_ansible_fetch_dir"
+      - swift_tar: "temporary_dir.tar.gz"
+    tasks:
+      set_vars:
+        publish:
+          swift_container: "<% $.container %><% $.container_suffix %>"
+          #swift_container: "need_no_change"
+          #swift_container: "empty"
+          #swift_container: "multiple"
+        on-complete: verify_container_exists
+
+      verify_container_exists:
+        action: swift.head_container container=<% $.swift_container %>
+        on-success: get_object_list
+        on-error: set_status_failed
+
+      get_object_list:
+        action: swift.get_container container=<% $.swift_container %>
+        # if container contents don't have [1]'th element, fail
+        publish:
+          object_list: <% task().result[1] %>
+        on-success: set_need_rename
+        on-error: set_status_failed
+
+      set_need_rename:
+        publish:
+          need_rename: <% switch($.object_list.len() = 0 => false, $.object_list.len() = 1 => $.object_list.first().get("name").matches("temporary_dir-[0-9]{4}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])-(2[0-3]|[01][0-9])[0-5][0-9][0-5][0-9].tar.gz")) %>
+        on-success: switch_on_need_rename
+        on-error: set_status_failed
+
+      switch_on_need_rename:
+        on-success:
+          - copy_to_new_name: <% $.need_rename = true %>
+          - finished: <% $.need_rename != true %>
+
+      copy_to_new_name:
+        action: swift.copy_object container=<% $.swift_container %> obj=<% $.object_list.first().get("name") %> destination=<% concat($.swift_container, '/', $.swift_tar) %>
+        on-success: remove_old_name
+        on-error: set_status_failed
+
+      remove_old_name:
+        action: swift.delete_object container=<% $.swift_container %> obj=<% $.object_list.first().get("name") %>
+        on-success: finished
+        on-error: set_status_failed
+
+      finished:
+        publish:
+          action: std.echo output="Finished!"
+
+      set_status_failed:
+        publish:
+          action: std.fail
